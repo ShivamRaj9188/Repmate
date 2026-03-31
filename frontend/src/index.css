@@ -1,0 +1,92 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #10141a;
+}
+
+#root {
+    max-width: none !important;
+    padding: 0 !important;
+    text-align: initial !important;
+  }
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0px 1000px #10141a inset !important;
+  -webkit-text-fill-color: #e4e6eb !important;
+  transition: background-color 9999s ease-in-out 0s;
+}
+
+.font-orbitron {
+  font-family: "Orbitron", sans-serif;
+}
+
+.font-inter {
+  font-family: "Inter", sans-serif;
+}
+
+.nav-link {
+  transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #3ECF8E;
+  text-shadow: 0 0 6px rgba(62, 207, 142, 0.6), 0 0 10px rgba(62, 207, 142, 0.3);
+  transform: translateY(-2px);
+}
+
+@layer components {
+  .btn-primary {
+    @apply font-orbitron font-semibold;
+  }
+}
+
+.custom-checkbox input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  height: 18px;
+  width: 18px;
+  background-color: #12171e;
+  border: 2px solid #3ECF8E;
+  border-radius: 4px;
+  box-shadow: 0 0 4px rgba(62, 207, 142, 0.3);
+  transition: all 0.3s ease;
+  display: inline-block;
+  position: relative;
+}
+
+.custom-checkbox input:checked + .checkmark {
+  background-color: #3ECF8E;
+  box-shadow: 0 0 10px rgba(62, 207, 142, 0.6), 0 0 18px rgba(62, 207, 142, 0.3);
+}
+
+.checkmark::after {
+  content: "";
+  position: absolute;
+  display: none;
+  left: 5px;
+  top: 1px;
+  width: 4px;
+  height: 9px;
+  border: solid #10141a;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.custom-checkbox input:checked + .checkmark::after {
+  display: block;
+}

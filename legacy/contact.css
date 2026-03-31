@@ -1,0 +1,304 @@
+/* === Base Setup === */
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #10141a;
+  color: #e4e6eb;
+}
+
+/* === Navbar (same as About Page) === */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem 2rem;
+  background-color: #12171e;
+  border-bottom: 1px solid #2c3340;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Orbitron', sans-serif;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: #3ECF8E;
+}
+
+.logo-img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid #3ECF8E;
+  object-fit: cover;
+  background-color: #10141a;
+  box-shadow: 0 0 8px rgba(0, 255, 170, 0.5), 0 0 16px rgba(0, 255, 170, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.logo-img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(0, 255, 170, 0.6), 0 0 20px rgba(0, 255, 170, 0.25);
+}
+
+.logo-text {
+  font-size: 1.5rem;
+  color: #3ECF8E;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.navbar ul {
+  display: flex;
+  gap: 1.2rem;
+  list-style: none;
+  font-family: 'Orbitron', sans-serif;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: #e4e6eb;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.navbar a:hover {
+  color: #3ECF8E;
+  text-shadow: 0 0 6px rgba(62, 207, 142, 0.6), 0 0 10px rgba(62, 207, 142, 0.3);
+  transform: translateY(-2px);
+}
+
+/* === Contact Page Layout === */
+.contact-page {
+  max-width: 1200px;
+  margin: 4rem auto;
+  padding: 0 2rem;
+}
+
+.contact-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+/* === Left Space (Image placeholder) === */
+.left-space {
+  flex: 1 1 300px;
+  min-height: 400px;
+  background-color: #151a20;
+  box-shadow: 0 0 10px rgba(62, 207, 142, 0.1);
+}
+
+.image-placeholder {
+  width: 100%;
+  height: 300px;
+  background-color: #1a1f27;
+  border: 2px dashed #2c3340;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(62, 207, 142, 0.1);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.image-placeholder:hover {
+  transform: scale(1.03);
+  border-color: #3ECF8E;
+  box-shadow: 0 0 10px rgba(62, 207, 142, 0.6),
+              0 0 16px rgba(62, 207, 142, 0.3);
+}
+
+.animated-img {
+  max-height: 100%;
+  max-width: 100%;
+  transition: transform 0.4s ease;
+  object-fit: contain;
+}
+
+.image-placeholder:hover .animated-img {
+  transform: scale(1.05);
+}
+
+.image-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.left-caption {
+  text-align: center;
+  font-family: 'Orbitron', sans-serif;
+  color: #3ECF8E;
+  font-size: 0.95rem;
+  text-shadow: 0 0 6px rgba(62, 207, 142, 0.3);
+  padding: 0 0.5rem;
+}
+
+
+/* === Form Area === */
+.form-area {
+  flex: 1 1 500px;
+  background-color: #1a1f27;
+  border: 1px solid #2c3340;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 0 16px rgba(0, 255, 170, 0.05);
+}
+
+.form-area h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2rem;
+  color: #3ECF8E;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* === Input Groups === */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+
+.input-group label {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.95rem;
+  color: #c8ccd4;
+  margin-bottom: 0.5rem;
+}
+
+.input-group input,
+.input-group select,
+.input-group textarea {
+  background-color: #12171e;
+  border: 1px solid #2c3340;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  color: #e4e6eb;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  outline: none;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input-group input:focus,
+.input-group select:focus,
+.input-group textarea:focus {
+  border-color: #3ECF8E;
+  box-shadow: 0 0 10px rgba(62, 207, 142, 0.2);
+}
+
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  box-shadow: 0 0 0px 1000px #12171e inset !important;
+  -webkit-box-shadow: 0 0 0px 1000px #12171e inset !important;
+  -webkit-text-fill-color: #e4e6eb !important;
+  transition: background-color 9999s ease-in-out 0s; /* hides flash */
+}
+
+/* === Custom Checkbox Styling === */
+.custom-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  position: relative;
+  color: #c8ccd4;
+}
+
+.custom-checkbox input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.checkmark {
+  height: 20px;
+  width: 20px;
+  background-color: #12171e;
+  border: 2px solid #3ECF8E;
+  border-radius: 4px;
+  box-shadow: 0 0 4px rgba(62, 207, 142, 0.3);
+  transition: all 0.3s ease;
+  display: inline-block;
+  position: relative;
+}
+
+.custom-checkbox input[type="checkbox"]:checked + .checkmark {
+  background-color: #3ECF8E;
+  box-shadow: 0 0 10px rgba(62, 207, 142, 0.6),
+              0 0 18px rgba(62, 207, 142, 0.3);
+}
+
+.checkmark::after {
+  content: '';
+  position: absolute;
+  display: none;
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid #10141a;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.custom-checkbox input[type="checkbox"]:checked + .checkmark::after {
+  display: block;
+}
+
+.checkbox-label-text {
+  text-shadow: 0 0 4px rgba(62, 207, 142, 0.2);
+}
+
+/* === Submit Button === */
+.submit-btn-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+.btn {
+  background-color: #0066FF;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  border-top-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+.btn:hover {
+  background-color: #0052cc;
+  box-shadow: 0 0 10px rgba(0, 102, 255, 0.6),
+              0 0 18px rgba(0, 102, 255, 0.3);
+  color: #3ECF8E;
+  transform: translateY(-2px);
+  text-shadow: 0 0 6px rgba(62, 207, 142, 0.6);
+}
+
+/* === Footer === */
+footer {
+  text-align: center;
+  padding: 2rem;
+  font-size: 0.9rem;
+  color: #78818e;
+  font-family: 'Inter', sans-serif;
+}

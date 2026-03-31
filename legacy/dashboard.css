@@ -1,0 +1,204 @@
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #0f172a;
+  color: white;
+}
+
+header {
+  padding: 20px 40px 10px;
+  z-index: 1;
+  position: relative;
+}
+
+.header-content {
+  display: flex;
+  align-items:center;
+  justify-items: center;
+  gap: 14px;
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: #3ECF8E;
+}
+
+.logo{
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: #3ECF8E;
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #3ECF8E;
+  background-color: #10141a;
+  box-shadow: 0 0 8px rgba(0, 255, 170, 0.5),
+              0 0 16px rgba(0, 255, 170, 0.15);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.logo:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(0, 255, 170, 0.6),
+              0 0 20px rgba(0, 255, 170, 0.25);
+}
+
+.main-heading {
+  text-align: left;
+  margin-top: 40px;
+  font-family: 'Orbitron', sans-serif;
+  text-transform: uppercase;
+  font-size: 2.5rem;
+  color: #3ECF8E;
+  letter-spacing: 1px;
+}
+
+.dashboard-container {
+  display: flex;
+  padding: 0 40px;
+  gap: 40px; /* ✅ creates space between sidebar and main content */
+}
+
+.main-dashboard {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 36px;
+  padding-top: 40px;
+}
+
+.welcome-msg {
+  grid-column: span 2;
+  font-family: 'Orbitron', sans-serif;
+  color: #3ECF8E;
+  margin-bottom: 10px;
+}
+
+.dashboard-card {
+  background-color: #1a1f27;
+  border: 2px solid #2c3340;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  padding: 1.2rem;
+  transition: all 0.3s ease;
+  font-family: 'Orbitron', sans-serif;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 300px;
+  position: relative;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0, 255, 170, 0.2);
+  background-color: #1f252e;
+  border-color: #3ECF8E;
+}
+
+.card-content {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+}
+
+.card-label {
+  margin-top: auto;
+  font-size: 1.2rem;
+  color: #3ECF8E; /* same as .main-heading */
+  font-family: 'Orbitron', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.sidebar {
+  width: 260px;
+  background: rgba(255, 255, 255, 0.05);
+  border-top: 1px solid #42f5b940;
+  border-left: 1px solid #42f5b940;
+  border-bottom: 1px solid #42f5b940;
+  padding: 20px;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex: 1;
+}
+
+.sidebar a {
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 500;
+}
+
+.sidebar a:hover {
+  color: #3ECF8E;
+  text-shadow: 0 0 8px #3ECF8E;
+}
+
+.sidebar li {
+  font-size: 1.1rem;
+  margin: 20px 0;
+  color: white;
+  cursor: pointer;
+  font-family: 'Orbitron', sans-serif;
+  transition: all 0.2s ease;
+}
+
+.sidebar li:hover {
+  color: #3ECF8E;
+  text-shadow: 0 0 8px #3ECF8E;
+}
+
+.logout-btn {
+  font-size: 1.1rem;
+  padding: 14px 0;
+  background: transparent;
+  border: 2px solid #ff4f4f;
+  color: #ff4f4f;
+  font-weight: bold;
+  border-top-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  transition: all 0.3s ease;
+  text-align: center;
+  width: 100%;
+  margin-top: auto;
+  margin-bottom: 10px;
+  font-family: 'Orbitron', sans-serif;
+}
+
+.logout-btn:hover {
+  background: #ff4f4f;
+  color: #000;
+}
+
+footer {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #888;
+  padding: 20px 0;
+  margin-top: 60px;
+  border-top: 1px solid #333;
+}

@@ -1,0 +1,258 @@
+/* === Base Setup === */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #10141a;
+  color: #e4e6eb;
+}
+
+/* === Wrapper === */
+.login-wrapper {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* === Left Side Image Area === */
+.login-image {
+  flex: 1;
+  background-color: #151a20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  position: relative;
+  box-shadow: inset -5px 0 10px rgba(0, 255, 170, 0.1);
+  overflow: hidden; /* 💥 This is the key */
+}
+
+.login-image img {
+  max-width: 90%;
+  max-height: 70%;
+  object-fit: contain;
+  border-radius: 12px;
+  border: 2px dashed #2c3340;
+  box-shadow: 0 0 10px rgba(62, 207, 142, 0.1);
+  transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.3s ease;
+  display: block;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.login-image img:hover {
+  transform: scale(1.2);
+  border-color: #3ECF8E;
+  box-shadow: 0 0 16px rgba(62, 207, 142, 0.3),
+              0 0 30px rgba(62, 207, 142, 0.15);
+}
+
+.login-image .caption {
+  margin-top: 1.2rem;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.95rem;
+  color: #3ECF8E;
+  text-shadow: 0 0 6px rgba(62, 207, 142, 0.3);
+  text-align: center;
+}
+
+.caption {
+    margin-bottom: 1rem;
+}
+
+/* === Right Side Form Area === */
+.login-form-area {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #1a1f27;
+  box-shadow: inset 5px 0 10px rgba(0, 102, 255, 0.05);
+  padding: 2rem;
+}
+
+.form-box {
+  width: 100%;
+  max-width: 400px;
+  background-color: #12171e;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 255, 170, 0.05);
+}
+
+.form-box h1 {
+  text-align: center;
+  color: #3ECF8E;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* === Input Fields === */
+.input-group {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group label {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.9rem;
+  color: #c8ccd4;
+  margin-bottom: 0.4rem;
+}
+
+.input-group input {
+  background-color: #10141a;
+  border: 1px solid #2c3340;
+  border-radius: 8px;
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  color: #e4e6eb;
+  outline: none;
+  font-family: 'Inter', sans-serif;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input-group input:focus {
+  border-color: #3ECF8E;
+  box-shadow: 0 0 10px rgba(62, 207, 142, 0.2);
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  box-shadow: 0 0 0px 1000px #10141a inset !important;
+  -webkit-box-shadow: 0 0 0px 1000px #10141a inset !important;
+  -webkit-text-fill-color: #e4e6eb !important;
+  transition: background-color 9999s ease-in-out 0s;
+}
+
+/* === Extras Row === */
+.extras {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.forgot-link {
+  color: #3ECF8E;
+  text-decoration: none;
+  font-family: 'Orbitron', sans-serif;
+  transition: text-shadow 0.3s ease;
+}
+
+.forgot-link:hover {
+  text-shadow: 0 0 6px rgba(62, 207, 142, 0.3);
+}
+
+/* === Custom Glowing Checkbox (🔥 NEW) === */
+.custom-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  position: relative;
+  color: #c8ccd4;
+}
+
+.custom-checkbox input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.checkmark {
+  height: 18px;
+  width: 18px;
+  background-color: #12171e;
+  border: 2px solid #3ECF8E;
+  border-radius: 4px;
+  box-shadow: 0 0 4px rgba(62, 207, 142, 0.3);
+  transition: all 0.3s ease;
+  display: inline-block;
+  position: relative;
+}
+
+.custom-checkbox input[type="checkbox"]:checked + .checkmark {
+  background-color: #3ECF8E;
+  box-shadow: 0 0 10px rgba(62, 207, 142, 0.6),
+              0 0 18px rgba(62, 207, 142, 0.3);
+}
+
+.checkmark::after {
+  content: '';
+  position: absolute;
+  display: none;
+  left: 5px;
+  top: 1px;
+  width: 4px;
+  height: 9px;
+  border: solid #10141a;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.custom-checkbox input[type="checkbox"]:checked + .checkmark::after {
+  display: block;
+}
+
+.checkbox-label-text {
+  text-shadow: 0 0 4px rgba(62, 207, 142, 0.2);
+}
+
+/* === Login Button === */
+.btn {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #0066FF;
+  color: white;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 600;
+  border: none;
+  border-top-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #0052cc;
+  box-shadow: 0 0 10px rgba(0, 102, 255, 0.6),
+              0 0 18px rgba(0, 102, 255, 0.3);
+  color: #3ECF8E;
+  text-shadow: 0 0 6px rgba(62, 207, 142, 0.6);
+  transform: translateY(-2px);
+}
+
+/* === Signup Link === */
+.signup-text {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.95rem;
+  color: #c8ccd4;
+}
+
+.signup-text a {
+  color: #3ECF8E;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.signup-text a:hover {
+  text-shadow: 0 0 6px rgba(62, 207, 142, 0.4);
+}

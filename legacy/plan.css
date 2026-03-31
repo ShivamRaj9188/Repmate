@@ -1,0 +1,276 @@
+/* Font & Base Reset */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #0d0d0d;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+}
+
+h1, h2 {
+  font-family: 'Orbitron', sans-serif;
+  color: #3ECF8E;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+/* Header */
+.header {
+  background: #12171e;
+  border-bottom: 1px solid #2c3340;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  height: 80px;
+  box-sizing: border-box;
+}
+
+.nav-right {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.nav-right a {
+  color: #ffffffcc;
+  text-decoration: none;
+  font-weight: 500;
+  font-family: 'Orbitron', sans-serif;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.nav-right a:hover {
+  color: #3ECF8E;
+  text-shadow: 0 0 6px rgba(62, 207, 142, 0.6);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: #3ECF8E;
+}
+
+.logo-img {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #3ECF8E;
+  background-color: #10141a;
+  box-shadow: 0 0 8px rgba(0, 255, 170, 0.5),
+              0 0 16px rgba(0, 255, 170, 0.15);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.logo-img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(0, 255, 170, 0.6),
+              0 0 20px rgba(0, 255, 170, 0.25);
+}
+
+.logo-text {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  color: #3ECF8E;
+  letter-spacing: 1px;
+}
+
+.title {
+  font-family: 'Orbitron', sans-serif;
+  color: #3ECF8E;
+  font-size: 1.5rem;
+  margin: 0;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Plan Container */
+.plan-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem 1rem;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* Card Row (Workout + Diet Side-by-Side) */
+.card-row {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+/* Plan Card General Style */
+.plan-card {
+  background-color: #1a1f27;
+  border: 2px solid #2c3340;
+  border-radius: 12px;
+  padding: 1.5rem 2rem;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+  transition: 0.3s ease;
+}
+
+.plan-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0, 255, 170, 0.2);
+  background-color: #1f252e;
+  border-color: #3ECF8E;
+}
+
+.plan-card:hover .plan-content-box {
+  border: 1px solid #0ef;
+  box-shadow: 0 0 15px rgba(0, 255, 170, 0.2);
+  transition: 0.3s ease-in-out;
+}
+
+/* Square Cards for First Row */
+.square-card {
+  flex: 1;
+  min-width: 340px;
+  max-width: 500px;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Extra Tips Full Width */
+#extra-tips {
+  width: 100%;
+  max-width: 1040px;
+}
+
+/* Plan Content Text */
+.plan-content-box {
+  background-color: #10141a;
+  border: 1px solid #2c3340;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-top: 1rem;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.plan-content {
+  color: #ffffffcc;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.plan-content p {
+  line-height: 1.7;
+  margin-top: 1rem;
+  white-space: pre-line;
+}
+
+.loading {
+  color: #ffffff99;
+  font-style: italic;
+}
+
+/* Buttons Area */
+.btn-area {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+/* Buttons */
+.cta-btn {
+  margin-top: 2rem;
+  display: inline-block;
+  background-color: #0066FF;
+  color: white;
+  padding: 0.8rem 1.5rem;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 0 6px rgba(0, 102, 255, 0.3);
+  transition: all 0.3s ease;
+  border-top-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  border-top-right-radius: 0;
+  border-bottom-left-radius: 0;
+  cursor: pointer;
+}
+
+.cta-btn:hover {
+  background-color: #0052cc;
+  box-shadow: 0 0 10px rgba(0, 102, 255, 0.6),
+              0 0 18px rgba(0, 102, 255, 0.3);
+  color: #3ECF8E;
+  text-shadow: 0 0 6px rgba(62, 207, 142, 0.6),
+               0 0 10px rgba(62, 207, 142, 0.3);
+  transform: translateY(-2px);
+}
+
+.cta-btn.secondary {
+  /* Optional: Keep same style for both or differentiate if needed */
+  background-color: #0066FF;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.cta-btn.secondary:hover {
+  background-color: #0052cc;
+  box-shadow: 0 0 10px rgba(0, 102, 255, 0.6),
+              0 0 18px rgba(0, 102, 255, 0.3);
+  color: #3ECF8E;
+  text-shadow: 0 0 6px rgba(62, 207, 142, 0.6),
+               0 0 10px rgba(62, 207, 142, 0.3);
+  transform: translateY(-2px);
+}
+
+
+/* Footer */
+footer {
+  margin-top: 4rem;
+  padding: 1rem 0;
+  border-top: 1px solid #2c3340;
+  text-align: center;
+  color: #888;
+  font-size: 0.9rem;
+}
+
+/* Responsive Tweaks */
+@media (max-width: 768px) {
+  .square-card {
+    height: auto;
+  }
+
+  .card-row {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .header {
+    flex-direction: column;
+    height: auto;
+    padding: 1rem;
+  }
+
+  .title {
+    margin-top: 1rem;
+  }
+
+  .nav-right {
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    align-items: center;
+  }
+
+}

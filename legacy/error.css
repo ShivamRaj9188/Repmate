@@ -1,0 +1,139 @@
+/* === Base Styles (matching home.css) === */
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #10141a;
+  color: #e4e6eb;
+}
+
+/* === Navbar (copy-paste from home.css for consistency) === */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem 2rem;
+  background-color: #12171e;
+  border-bottom: 1px solid #2c3340;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Orbitron', sans-serif;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: #3ECF8E;
+}
+
+.logo-img {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #3ECF8E;
+  background-color: #10141a;
+  box-shadow: 0 0 8px rgba(0, 255, 170, 0.5),
+              0 0 16px rgba(0, 255, 170, 0.15);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.logo-img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(0, 255, 170, 0.6),
+              0 0 20px rgba(0, 255, 170, 0.25);
+}
+
+.logo-text {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  color: #3ECF8E;
+  letter-spacing: 1px;
+}
+
+.navbar ul {
+  display: flex;
+  gap: 1.2rem;
+  list-style: none;
+  font-family: 'Orbitron', sans-serif;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: #e4e6eb;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.navbar a:hover {
+  color: #3ECF8E;
+  text-shadow: 0 0 6px rgba(62, 207, 142, 0.6),
+               0 0 10px rgba(62, 207, 142, 0.3);
+  transform: translateY(-2px);
+}
+
+/* === Error Hero Section === */
+.error-hero {
+  text-align: center;
+  padding: 6rem 2rem;
+  max-width: 800px;
+  margin: auto;
+}
+
+.glitchy-title {
+  font-size: 3rem;
+  font-family: 'Orbitron', sans-serif;
+  color: #3ECF8E;
+  text-shadow: 0 0 8px rgba(62, 207, 142, 0.5),
+               0 0 15px rgba(0, 255, 170, 0.2);
+  margin-bottom: 1rem;
+  letter-spacing: 1px;
+}
+
+.error-message {
+  font-size: 1.3rem;
+  font-family: 'Inter', sans-serif;
+  color: #c8ccd4;
+  margin-bottom: 2.5rem;
+}
+
+/* === Buttons (copied & tweaked from home.css) === */
+.cta-btn {
+  display: inline-block;
+  background-color: #0066FF;
+  color: white;
+  padding: 0.8rem 1.5rem;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 0 6px rgba(0, 102, 255, 0.3);
+  transition: all 0.3s ease;
+  border-top-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  border-top-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.cta-btn:hover {
+  background-color: #0052cc;
+  box-shadow: 0 0 10px rgba(0, 102, 255, 0.6),
+              0 0 18px rgba(0, 102, 255, 0.3);
+  color: #3ECF8E;
+  text-shadow: 0 0 6px rgba(62, 207, 142, 0.6),
+               0 0 10px rgba(62, 207, 142, 0.3);
+  transform: translateY(-2px);
+}
+
+/* === Footer === */
+footer {
+  text-align: center;
+  padding: 2rem;
+  font-size: 0.9rem;
+  color: #78818e;
+  font-family: 'Inter', sans-serif;
+}

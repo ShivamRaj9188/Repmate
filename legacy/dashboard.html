@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RepMate | Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Inter&display=swap" rel="stylesheet">
+  <style>
+    body { font-family:'Inter', sans-serif; background-color:#0f172a; color:white; }
+    .orbitron { font-family:'Orbitron', sans-serif; }
+  </style>
+</head>
+<body class="h-full m-0">
+
+<!-- Header -->
+<header class="p-5 relative z-10">
+  <div class="flex items-center gap-3">
+    <img src="images/new-logo.png" alt="RepMate Logo"
+         class="w-12 h-12 object-cover rounded-full border-2 border-[#3ECF8E] bg-[#10141a] shadow-[0_0_8px_rgba(0,255,170,0.5),0_0_16px_rgba(0,255,170,0.15)] transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-[0_0_10px_rgba(0,255,170,0.6),0_0_20px_rgba(0,255,170,0.25)]"/>
+    <h1 class="main-heading orbitron text-[#3ECF8E] text-4xl uppercase tracking-wide">Dashboard</h1>
+  </div>
+</header>
+
+<!-- Dashboard Container -->
+<div class="flex px-10 gap-10">
+
+  <!-- Main Dashboard -->
+  <div class="flex-1 grid grid-cols-2 gap-9 pt-10">
+    <h2 class="welcome-msg orbitron text-[#3ECF8E] col-span-2 mb-2">Welcome back, Champ!</h2>
+
+    <!-- Streak Counter -->
+    <div id="streak-card" class="dashboard-card bg-[#1a1f27] border-2 border-[#2c3340] rounded-lg p-5 flex flex-col items-center justify-center cursor-pointer transition-transform duration-300 hover:-translate-y-1.5 hover:shadow-[0_12px_24px_rgba(0,255,170,0.2)] hover:bg-[#1f252e] hover:border-[#3ECF8E] w-full h-[150px]">
+      <div class="card-content flex items-center justify-center orbitron text-[#3ECF8E] text-2xl">🔥 <span id="streak-count" class="ml-2">0</span></div>
+      <span class="card-label orbitron text-[#3ECF8E] text-lg uppercase tracking-wide mt-2">Streak</span>
+    </div>
+
+    <!-- Progress Bar -->
+    <div id="progress-card" class="dashboard-card bg-[#1a1f27] border-2 border-[#2c3340] rounded-lg p-5 flex flex-col justify-center cursor-pointer transition-transform duration-300 hover:-translate-y-1.5 hover:shadow-[0_12px_24px_rgba(0,255,170,0.2)] hover:bg-[#1f252e] hover:border-[#3ECF8E] w-full h-[150px]">
+      <span class="card-label orbitron text-[#3ECF8E] text-lg uppercase tracking-wide mb-2">Progress</span>
+      <div class="w-full bg-[#2c3340] rounded-full h-4">
+        <div id="progress-fill" class="bg-[#3ECF8E] h-4 rounded-full orbitron text-xs text-black text-center" style="width: 0%">0%</div>
+      </div>
+    </div>
+
+    <!-- Existing Cards -->
+    <div id="workouts-card" class="dashboard-card bg-[#1a1f27] border-2 border-[#2c3340] rounded-lg p-5 flex flex-col items-center justify-between cursor-pointer transition-transform duration-300 hover:-translate-y-1.5 hover:shadow-[0_12px_24px_rgba(0,255,170,0.2)] hover:bg-[#1f252e] hover:border-[#3ECF8E] min-h-[300px]">
+      <div class="card-content flex-1 w-full flex items-center justify-center rounded-lg"></div>
+      <span class="card-label orbitron text-[#3ECF8E] text-lg uppercase tracking-wide mt-2">Workout Logs</span>
+    </div>
+
+    <div class="dashboard-card bg-[#1a1f27] border-2 border-[#2c3340] rounded-lg p-5 flex flex-col items-center justify-between cursor-pointer transition-transform duration-300 hover:-translate-y-1.5 hover:shadow-[0_12px_24px_rgba(0,255,170,0.2)] hover:bg-[#1f252e] hover:border-[#3ECF8E] min-h-[300px]">
+      <div class="card-content flex-1 w-full flex items-center justify-center rounded-lg" id="calories-content"></div>
+      <span class="card-label orbitron text-[#3ECF8E] text-lg uppercase tracking-wide mt-2">Calories Burned</span>
+    </div>
+
+    <div class="dashboard-card bg-[#1a1f27] border-2 border-[#2c3340] rounded-lg p-5 flex flex-col items-center justify-between cursor-pointer transition-transform duration-300 hover:-translate-y-1.5 hover:shadow-[0_12px_24px_rgba(0,255,170,0.2)] hover:bg-[#1f252e] hover:border-[#3ECF8E] min-h-[300px]">
+      <div class="card-content flex-1 w-full flex items-center justify-center rounded-lg" id="goals-content"></div>
+      <span class="card-label orbitron text-[#3ECF8E] text-lg uppercase tracking-wide mt-2">Goals Achieved</span>
+    </div>
+
+    <div class="dashboard-card bg-[#1a1f27] border-2 border-[#2c3340] rounded-lg p-5 flex flex-col items-center justify-between cursor-pointer transition-transform duration-300 hover:-translate-y-1.5 hover:shadow-[0_12px_24px_rgba(0,255,170,0.2)] hover:bg-[#1f252e] hover:border-[#3ECF8E] min-h-[300px]">
+      <div class="card-content flex-1 w-full flex items-center justify-center rounded-lg" id="timeline-content"></div>
+      <span class="card-label orbitron text-[#3ECF8E] text-lg uppercase tracking-wide mt-2">Progress Timeline</span>
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  <aside class="w-[260px] bg-white/5 border-t border-l border-b border-[#42f5b940] p-5 h-screen sticky top-0 flex flex-col justify-between">
+    <ul class="flex-1 p-0 m-0">
+      <li class="mb-5 text-white orbitron text-lg hover:text-[#3ECF8E] hover:drop-shadow-[0_0_8px_#3ECF8E]"><a href="home.html">Home</a></li>
+      <li class="mb-5 text-white orbitron text-lg hover:text-[#3ECF8E] hover:drop-shadow-[0_0_8px_#3ECF8E]"><a href="profile.html">Profile</a></li>
+      <li class="mb-5 text-white orbitron text-lg hover:text-[#3ECF8E] hover:drop-shadow-[0_0_8px_#3ECF8E]"><a href="goal-selection.html">Goals</a></li>
+      <li class="mb-5 text-white orbitron text-lg hover:text-[#3ECF8E] hover:drop-shadow-[0_0_8px_#3ECF8E]"><a href="plan.html">AI Planner</a></li>
+      <li class="mb-5 text-white orbitron text-lg hover:text-[#3ECF8E] hover:drop-shadow-[0_0_8px_#3ECF8E]"><a href="about.html">About</a></li>
+      <li class="mb-5 text-white orbitron text-lg hover:text-[#3ECF8E] hover:drop-shadow-[0_0_8px_#3ECF8E]"><a href="contact.html">Contact</a></li>
+    </ul>
+    <button class="logout-btn text-[#ff4f4f] border-2 border-[#ff4f4f] font-bold rounded-tl-[15px] rounded-br-[15px] rounded-tr-[8px] rounded-bl-[8px] p-3 mt-auto mb-2 w-full hover:bg-[#ff4f4f] hover:text-black orbitron transition">Logout</button>
+  </aside>
+</div>
+
+<!-- Social Media Sharing -->
+<div class="flex-1 grid grid-cols-2 gap-9 col-span-2 mt-8 mb-8">
+  <div class="dashboard-card bg-[#1a1f27] border-2 border-[#2c3340] rounded-lg p-6 flex flex-col items-center justify-between cursor-pointer transition-transform duration-300 hover:-translate-y-1.5 hover:shadow-[0_12px_24px_rgba(0,255,170,0.2)] hover:bg-[#1f252e] hover:border-[#3ECF8E] min-h-[220px] col-span-2">
+    
+    <!-- Icon Grid -->
+    <div class="grid grid-cols-3 gap-6 w-full h-full flex-1">
+      <a href="#" id="share-twitter"
+         class="bg-[#12171e] border-2 border-[#2c3340] rounded-lg flex items-center justify-center text-3xl transition hover:border-[#E4405F] hover:shadow-[0_0_12px_#E4405F]">
+         🐦
+      </a>
+      <a href="#" id="share-instagram"
+         class="bg-[#12171e] border-2 border-[#2c3340] rounded-lg flex items-center justify-center text-3xl transition hover:border-[#E4405F] hover:shadow-[0_0_12px_#E4405F]">
+         📸
+      </a>
+      <a href="#" id="share-whatsapp"
+         class="bg-[#12171e] border-2 border-[#2c3340] rounded-lg flex items-center justify-center text-3xl transition hover:border-[#E4405F] hover:shadow-[0_0_12px_#E4405F]">
+         💬
+      </a>
+    </div>
+
+    <!-- Label -->
+    <span class="orbitron text-[#3ECF8E] text-lg uppercase tracking-wide mt-4">
+      Share Progress
+    </span>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="text-center text-sm text-gray-400 py-5 mt-14 border-t border-[#333]">
+  <p>© 2025 RepMate. All Rights Reserved.</p>
+</footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  /**
+   * Robust loader for repMateProgress data.
+   * Handles:
+   *  - repMateProgress
+   *  - repMateProgress_<email>
+   *  - keys starting with repMateProgress (including cases where JSON was embedded in the key)
+   *  - sensible fallback to repMateUserProfile / repMateSelectedPlan / selectedGoals
+   */
+
+  function safeParse(str) {
+    if (!str) return null;
+    try { return JSON.parse(str); } catch (e) { return null; }
+  }
+
+  // 1) Try direct known keys
+  const userEmail = localStorage.getItem("repMateUserEmail");
+  let progressRaw = localStorage.getItem("repMateProgress") || null;
+  if (!progressRaw && userEmail) {
+    progressRaw = localStorage.getItem("repMateProgress_" + userEmail) || null;
+  }
+
+  // 2) If still not found, search all keys that include/ start with 'repMateProgress'
+  if (!progressRaw) {
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (!k) continue;
+      if (k === "repMateProgress" || k.startsWith("repMateProgress")) {
+        // Prefer value if it looks like JSON with useful fields
+        const candidateVal = localStorage.getItem(k);
+        const parsedVal = safeParse(candidateVal);
+        if (parsedVal && (parsedVal.profile || parsedVal.completed || parsedVal.goal)) {
+          progressRaw = candidateVal;
+          break;
+        }
+
+        // If not in the value, it's possible the key itself contains the plan JSON (weird cases).
+        // Try parsing the key suffix after prefix 'repMateProgress_' if present (some buggy code may have saved that way).
+        const prefix = "repMateProgress_";
+        if (k.startsWith(prefix)) {
+          const keyJson = k.slice(prefix.length);
+          const parsedKeyJson = safeParse(keyJson);
+          if (parsedKeyJson && (parsedKeyJson.profile || parsedKeyJson.goal)) {
+            // merge parsedKeyJson with parsedVal (value may contain completed array)
+            const merged = Object.assign({}, parsedKeyJson, (parsedVal || {}));
+            progressRaw = JSON.stringify(merged);
+            break;
+          }
+        }
+
+        // if value exists but isn't complete, keep it as candidate and break to parse it later
+        if (candidateVal) {
+          progressRaw = candidateVal;
+          break;
+        }
+      }
+    }
+  }
+
+  // 3) parse or fallback to building from other keys
+  let progressData = safeParse(progressRaw);
+  if (!progressData) {
+    // Fallback: assemble from repMateUserProfile + selectedGoals + repMateSelectedPlan (if any)
+    const profileFromUserProfile = safeParse(localStorage.getItem("repMateUserProfile")) ||
+                                   safeParse(localStorage.getItem("repMateUserProfile_" + userEmail)) ||
+                                   null;
+    const selectedGoals = safeParse(localStorage.getItem("selectedGoals")) || safeParse(localStorage.getItem("selectedGoals_" + userEmail)) || null;
+
+    // repMateSelectedPlan may contain profile & goal & place
+    const selectedPlan = safeParse(localStorage.getItem("repMateSelectedPlan")) ||
+                         safeParse(localStorage.getItem("selectedPlan")) ||
+                         safeParse(localStorage.getItem("repMateSelectedPlan_" + userEmail)) ||
+                         null;
+
+    progressData = {};
+
+    // profile priority: explicit repMateProgress.profile > repMateSelectedPlan.profile > repMateUserProfile
+    progressData.profile = (selectedPlan && selectedPlan.profile) ? selectedPlan.profile : (profileFromUserProfile || { username: "", email: userEmail || "" });
+
+    // goal priority: repMateSelectedPlan.goal > selectedGoals
+    progressData.goal = (selectedPlan && selectedPlan.goal) ? selectedPlan.goal : (selectedGoals || []);
+
+    // place
+    progressData.place = (selectedPlan && selectedPlan.place) ? selectedPlan.place : (selectedPlan && selectedPlan.profile && selectedPlan.profile.place) || "Home";
+
+    // completed: try to find any key that looks like it holds completion info
+    const possibleCompleted = safeParse(localStorage.getItem("repMateProgressCompleted")) ||
+                              safeParse(localStorage.getItem("repMateProgress_completed")) ||
+                              safeParse(localStorage.getItem("repMateProgressData")) ||
+                              null;
+    progressData.completed = (possibleCompleted && possibleCompleted.completed) ? possibleCompleted.completed : (possibleCompleted && Array.isArray(possibleCompleted) ? possibleCompleted : []);
+  }
+
+  // If parsed object contains nested stringified JSON (rare), normalize
+  if (typeof progressData === "string") {
+    const tmp = safeParse(progressData);
+    if (tmp) progressData = tmp;
+  }
+
+  // Normalize fields
+  progressData.profile = progressData.profile || {};
+  progressData.goal = progressData.goal || [];
+  // completed might be stored under several shapes: { completed: [...] } or ["1","2"]
+  let completed = [];
+  if (Array.isArray(progressData.completed)) {
+    completed = progressData.completed;
+  } else if (progressData.completed && Array.isArray(progressData.completed.completed)) {
+    completed = progressData.completed.completed;
+  } else if (typeof progressData.completed === "object") {
+    // try to find keys inside
+    for (const k in progressData.completed) {
+      if (Array.isArray(progressData.completed[k])) {
+        completed = progressData.completed[k];
+        break;
+      }
+    }
+  } else if (!progressData.completed) {
+    completed = [];
+  }
+
+  // final safety cast
+  if (!Array.isArray(completed)) completed = [];
+
+  // Compute username shown
+  const username = (progressData.profile && progressData.profile.username && String(progressData.profile.username).trim()) ? progressData.profile.username : (
+    (safeParse(localStorage.getItem("repMateUserProfile")) && safeParse(localStorage.getItem("repMateUserProfile")).username) ? safeParse(localStorage.getItem("repMateUserProfile")).username :
+    (safeParse(localStorage.getItem("repMateUserData")) && safeParse(localStorage.getItem("repMateUserData")).name) ? safeParse(localStorage.getItem("repMateUserData")).name :
+    "Fitness Champ"
+  );
+  document.querySelector(".welcome-msg").textContent = `Welcome back, ${username}!`;
+
+  // Streak = number of consecutive completed entries we can infer. For simplicity we'll use completed.length
+  const streakCount = completed.length || 0;
+  document.getElementById("streak-count").textContent = streakCount;
+
+  // Determine totalWorkouts if plan details available
+  let totalWorkouts = 7; // default fallback
+  // Check for explicit total in repMateSelectedPlan or progressData
+  const selectedPlanCandidate = safeParse(localStorage.getItem("repMateSelectedPlan")) ||
+                                safeParse(localStorage.getItem("selectedPlan")) ||
+                                safeParse(localStorage.getItem("repMateSelectedPlan_" + userEmail));
+  if (selectedPlanCandidate) {
+    if (Array.isArray(selectedPlanCandidate.workouts) && selectedPlanCandidate.workouts.length > 0) {
+      totalWorkouts = selectedPlanCandidate.workouts.length;
+    } else if (typeof selectedPlanCandidate.totalDays === "number") {
+      totalWorkouts = selectedPlanCandidate.totalDays;
+    } else if (Array.isArray(selectedPlanCandidate.goal) && selectedPlanCandidate.goal.length > 0) {
+      // no clear workouts count — keep default 7
+    }
+  }
+  // If progressData supplies a hint:
+  if (typeof progressData.totalWorkouts === "number") totalWorkouts = progressData.totalWorkouts;
+  if (Array.isArray(progressData.workouts) && progressData.workouts.length > 0) totalWorkouts = progressData.workouts.length;
+
+  // Compute progress %
+  const progressPercent = Math.min(Math.round((streakCount / Math.max(1, totalWorkouts)) * 100), 100);
+  const progressFill = document.getElementById("progress-fill");
+  progressFill.style.width = progressPercent + "%";
+  progressFill.textContent = progressPercent + "%";
+
+  // Populate stats cards (safe fallbacks)
+  document.getElementById("calories-content").innerHTML =
+    progressData.calories || localStorage.getItem("caloriesBurned") || "No data yet 🔥";
+
+  // Show goals achieved either from progressData.goals or selectedGoals
+  const goalsFromProgress = (progressData.goals && (Array.isArray(progressData.goals) ? progressData.goals.join(", ") : progressData.goals));
+  const selectedGoals = safeParse(localStorage.getItem("selectedGoals")) || safeParse(localStorage.getItem("selectedGoals_" + userEmail));
+  document.getElementById("goals-content").innerHTML =
+    goalsFromProgress || (selectedGoals && selectedGoals.length ? selectedGoals.join(", ") : localStorage.getItem("goalsAchieved") || "No data yet 🏆");
+
+  // Timeline content
+  document.getElementById("timeline-content").innerHTML =
+    progressData.timeline || localStorage.getItem("progressTimeline") || "Track your progress 📈";
+
+  // Workouts card click: route to workout only if a plan exists (try repMateSelectedPlan or repMateSelectedPlan_<email> or selectedPlan)
+  document.getElementById("workouts-card").addEventListener("click", () => {
+    const planCandidate = safeParse(localStorage.getItem("repMateSelectedPlan")) ||
+                          safeParse(localStorage.getItem("selectedPlan")) ||
+                          safeParse(localStorage.getItem("repMateSelectedPlan_" + userEmail));
+    if (planCandidate) {
+      window.location.href = "workout.html?day=1";
+    } else {
+      // fallback to the generic plan page
+      window.location.href = "plan.html";
+    }
+  });
+
+  // If progress completed 100% -> clear and go to goal selection
+  if (progressPercent >= 100) {
+    try {
+      localStorage.removeItem("repMateProgress");
+    } catch (e) {}
+    window.location.href = "goal-selection.html";
+  }
+
+  // Logout clears and returns to login
+  document.querySelector(".logout-btn").addEventListener("click", () => {
+    localStorage.clear();
+    window.location.href = "login.html";
+  });
+});
+</script>
+</body>
+</html>

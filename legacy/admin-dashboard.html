@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RepMate | Trainer Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #0d0d0d; color: #fff; }
+    h1, h2, h3, .orbitron, nav a, .cta-btn { font-family: 'Orbitron', sans-serif; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="bg-[#12171e] border-b border-[#2c3340] flex items-center justify-between px-8 h-20 relative">
+    <div class="flex items-center gap-2 text-[#3ECF8E] font-bold text-2xl">
+      <img src="images/new-logo.png" alt="RepMate Logo" 
+           class="w-12 h-12 object-cover rounded-full border-2 border-[#3ECF8E] bg-[#10141a] shadow-[0_0_8px_rgba(0,255,170,0.5),0_0_16px_rgba(0,255,170,0.15)] hover:scale-105 hover:shadow-[0_0_10px_rgba(0,255,170,0.6),0_0_20px_rgba(0,255,170,0.25)] transition duration-300">
+      <span class="orbitron text-[#3ECF8E] uppercase tracking-wide">RepMate</span>
+    </div>
+    <h1 class="absolute left-1/2 -translate-x-1/2 text-[#3ECF8E] text-2xl font-bold m-0 orbitron">Trainer Dashboard</h1>
+  </header>
+
+  <!-- Main Layout -->
+  <div class="flex flex-1">
+    
+    <!-- Sidebar -->
+<aside class="w-[260px] bg-white/5 border-t border-r border-b border-[#42f5b940] p-5 h-screen sticky top-0 flex flex-col justify-between">
+  <ul class="flex-1 p-0 m-0">
+    <li class="mb-5 text-white orbitron text-lg hover:text-[#3ECF8E] hover:drop-shadow-[0_0_8px_#3ECF8E]">
+      <a href="#">🏠 Dashboard</a>
+    </li>
+    <li class="mb-5 text-white orbitron text-lg hover:text-[#3ECF8E] hover:drop-shadow-[0_0_8px_#3ECF8E]">
+      <a href="#">👥 Trainee List</a>
+    </li>
+    <li class="mb-5 text-white orbitron text-lg hover:text-[#3ECF8E] hover:drop-shadow-[0_0_8px_#3ECF8E]">
+      <a href="#">📊 Progress</a>
+    </li>
+    <li class="mb-5 text-white orbitron text-lg hover:text-[#3ECF8E] hover:drop-shadow-[0_0_8px_#3ECF8E]">
+      <a href="#">📚 Plans Library</a>
+    </li>
+    <li class="mb-5 text-white orbitron text-lg hover:text-[#3ECF8E] hover:drop-shadow-[0_0_8px_#3ECF8E]">
+      <a href="#">💬 Messages</a>
+    </li>
+  </ul>
+  <button class="logout-btn text-[#ff4f4f] border-2 border-[#ff4f4f] font-bold rounded-tl-[15px] rounded-br-[15px] rounded-tr-[8px] rounded-bl-[8px] p-3 mt-auto mb-2 w-full hover:bg-[#ff4f4f] hover:text-black orbitron transition">
+    Logout
+  </button>
+</aside>
+
+
+    <!-- Main Content -->
+    <main class="flex-1 p-8 overflow-y-auto">
+
+      <!-- Section: Dashboard Overview -->
+      <section class="mb-10">
+        <h2 class="orbitron text-xl font-bold text-[#3ECF8E] mb-4">📊 Overview</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-[#1a1f27] p-6 rounded-xl border-2 border-[#2c3340] shadow-md hover:-translate-y-1.5 hover:shadow-[0_12px_24px_rgba(0,255,170,0.15)] hover:border-[#3ECF8E] transition">
+            <h3 class="orbitron text-lg text-[#0066FF]">Total Trainees</h3>
+            <p class="text-3xl font-bold mt-2">25</p>
+          </div>
+          <div class="bg-[#1a1f27] p-6 rounded-xl border-2 border-[#2c3340] shadow-md hover:-translate-y-1.5 hover:shadow-[0_12px_24px_rgba(0,255,170,0.15)] hover:border-[#3ECF8E] transition">
+            <h3 class="orbitron text-lg text-[#0066FF]">Active Plans</h3>
+            <p class="text-3xl font-bold mt-2">18</p>
+          </div>
+          <div class="bg-[#1a1f27] p-6 rounded-xl border-2 border-[#2c3340] shadow-md hover:-translate-y-1.5 hover:shadow-[0_12px_24px_rgba(0,255,170,0.15)] hover:border-[#3ECF8E] transition">
+            <h3 class="orbitron text-lg text-[#0066FF]">Avg Streak</h3>
+            <p class="text-3xl font-bold mt-2">12 days</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: Trainee List -->
+      <section class="mb-10">
+        <h2 class="orbitron text-xl font-bold text-[#3ECF8E] mb-4">👥 Trainee List</h2>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm border-2 border-[#2c3340] rounded-xl overflow-hidden shadow-md">
+            <thead class="bg-[#1a1f27] text-[#3ECF8E]">
+              <tr>
+                <th class="px-4 py-3 text-left">Name</th>
+                <th class="px-4 py-3 text-left">Age</th>
+                <th class="px-4 py-3 text-left">Weight</th>
+                <th class="px-4 py-3 text-left">Goal</th>
+                <th class="px-4 py-3 text-left">Progress</th>
+                <th class="px-4 py-3 text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-[#2c3340]">
+              <tr class="hover:bg-[#1f252e] transition">
+                <td class="px-4 py-2">Rahul Sharma</td>
+                <td class="px-4 py-2">24</td>
+                <td class="px-4 py-2">70kg</td>
+                <td class="px-4 py-2">Muscle Gain</td>
+                <td class="px-4 py-2">🔥 15-day streak</td>
+                <td class="px-4 py-2 text-center">
+                  <button class="cta-btn bg-[#0066FF] hover:bg-[#0052cc] px-3 py-1 rounded-md text-xs font-semibold">Update Plan</button>
+                </td>
+              </tr>
+              <tr class="hover:bg-[#1f252e] transition">
+                <td class="px-4 py-2">Sneha Patel</td>
+                <td class="px-4 py-2">27</td>
+                <td class="px-4 py-2">60kg</td>
+                <td class="px-4 py-2">Fat Loss</td>
+                <td class="px-4 py-2">✅ 80% adherence</td>
+                <td class="px-4 py-2 text-center">
+                  <button class="cta-btn bg-[#0066FF] hover:bg-[#0052cc] px-3 py-1 rounded-md text-xs font-semibold">Update Plan</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Section: Plans Library -->
+      <section>
+        <h2 class="orbitron text-xl font-bold text-[#3ECF8E] mb-4">📚 Plans Library</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="bg-[#1a1f27] p-6 rounded-xl border-2 border-[#2c3340] shadow-md hover:-translate-y-1.5 hover:shadow-[0_12px_24px_rgba(0,255,170,0.2)] hover:bg-[#1f252e] hover:border-[#3ECF8E] transition">
+            <h3 class="orbitron text-lg text-[#0066FF]">Beginner Fat Loss</h3>
+            <p class="text-sm mt-2">A 4-week plan focusing on cardio, light weights, and balanced meals.</p>
+            <button class="mt-4 cta-btn bg-[#0066FF] hover:bg-[#0052cc] px-3 py-1 rounded-md text-xs font-semibold">Assign</button>
+          </div>
+          <div class="bg-[#1a1f27] p-6 rounded-xl border-2 border-[#2c3340] shadow-md hover:-translate-y-1.5 hover:shadow-[0_12px_24px_rgba(0,255,170,0.2)] hover:bg-[#1f252e] hover:border-[#3ECF8E] transition">
+            <h3 class="orbitron text-lg text-[#0066FF]">Muscle Gain Pro</h3>
+            <p class="text-sm mt-2">A 6-week strength-focused plan with progressive overload routines.</p>
+            <button class="mt-4 cta-btn bg-[#0066FF] hover:bg-[#0052cc] px-3 py-1 rounded-md text-xs font-semibold">Assign</button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer class="mt-10 py-4 border-t border-[#2c3340] text-center text-gray-400 text-sm">
+    <p>&copy; 2025 RepMate. All Rights Reserved.</p>
+  </footer>
+</body>
+</html>
