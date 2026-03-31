@@ -1,7 +1,7 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Play, Square, RotateCcw, CheckCircle, AlertCircle, Wifi, WifiOff } from 'lucide-react'
+import { Play, Square, RotateCcw, CheckCircle, AlertCircle, Wifi, WifiOff, Lightbulb } from 'lucide-react'
 import Navbar from '../components/layout/Navbar'
 import CameraFeed from '../components/workout/CameraFeed'
 import RepHUD from '../components/workout/RepHUD'
@@ -165,7 +165,7 @@ export default function WorkoutPage() {
         await saveMetrics(sessionId, finalReps, finalSpeed || 0, accuracy)
         // Fix: mark session as COMPLETED (was permanently IN_PROGRESS)
         await completeSession(sessionId)
-        showToast('Session saved! Great work 💪', 'success')
+        showToast('Session saved! Great work', 'success')
         setTimeout(() => navigate('/history'), 1500)
       } catch {
         showToast('Could not save session — backend may be offline', 'error')
@@ -423,8 +423,8 @@ export default function WorkoutPage() {
                 border: '1px solid rgba(124,58,237,0.2)',
               }}
             >
-              <div style={{ fontSize: '12px', fontWeight: 600, color: '#7c3aed', letterSpacing: '0.5px', marginBottom: '8px' }}>
-                💡 TIPS
+              <div style={{ fontSize: '12px', fontWeight: 600, color: '#7c3aed', letterSpacing: '0.5px', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <Lightbulb size={14} color="#7c3aed" /> TIPS
               </div>
               <ul style={{ margin: 0, padding: '0 0 0 16px', color: '#6b7280', fontSize: '13px', lineHeight: 1.8 }}>
                 <li>Ensure good lighting on your body</li>

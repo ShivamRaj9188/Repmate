@@ -1,10 +1,10 @@
 import { ChevronDown } from 'lucide-react'
 
 const EXERCISES = [
-  { value: 'PUSHUP', label: 'Push-Ups', emoji: '💪', available: true },
-  { value: 'SQUAT', label: 'Squats', emoji: '🦵', available: true },
-  { value: 'CURL', label: 'Bicep Curls', emoji: '🏋️', available: true },
-  { value: 'PULLUP', label: 'Pull-Ups', emoji: '⬆️', available: true },
+  { value: 'PUSHUP', label: 'Push-Ups', available: true },
+  { value: 'SQUAT', label: 'Squats', available: true },
+  { value: 'CURL', label: 'Bicep Curls', available: true },
+  { value: 'PULLUP', label: 'Pull-Ups', available: true },
 ]
 
 export default function ExercisePicker({ value, onChange, disabled }) {
@@ -42,9 +42,9 @@ export default function ExercisePicker({ value, onChange, disabled }) {
             opacity: disabled ? 0.6 : 1,
           }}
         >
-          {EXERCISES.map(({ value: v, label, emoji, available }) => (
+          {EXERCISES.map(({ value: v, label, available }) => (
             <option key={v} value={v} disabled={!available}>
-              {emoji} {label} {!available ? '(Coming Soon)' : ''}
+              {label} {!available ? '(Coming Soon)' : ''}
             </option>
           ))}
         </select>

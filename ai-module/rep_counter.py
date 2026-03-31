@@ -58,35 +58,44 @@ class RepCounter:
         Counts a rep based on the primary joint angle for the exercise type.
         Supports: PUSHUP, SQUAT, CURL, PULLUP.
         """
+        # --- EMA Smoothing ---
+        alpha = 0.3 # 30% new value, 70% history for strong stability
+        if not hasattr(self, 'smoothed_angle') or self.smoothed_angle is None:
+            self.smoothed_angle = joint_angle
+        else:
+            self.smoothed_angle = alpha * joint_angle + (1 - alpha) * self.smoothed_angle
+            
+        angle = self.smoothed_angle
+
         # --- Logic: Count on full range completion ---
         if self.exercise_type == "PUSHUP":
-            if joint_angle < 90:
+            if angle < 90:
                 self.stage = "DOWN"
-            if joint_angle > 160 and self.stage == "DOWN":
+            if angle > 160 and self.stage == "DOWN":
                 self.stage = "UP"
                 self.counter += 1
                 self._record_speed()
 
         elif self.exercise_type == "SQUAT":
-            if joint_angle < 90:
+            if angle < 90:
                 self.stage = "DOWN"
-            if joint_angle > 160 and self.stage == "DOWN":
+            if angle > 160 and self.stage == "DOWN":
                 self.stage = "UP"
                 self.counter += 1
                 self._record_speed()
 
         elif self.exercise_type == "CURL":
-            if joint_angle < 45:
+            if angle < 45:
                 self.stage = "UP"
-            if joint_angle > 160 and self.stage == "UP":
+            if angle > 160 and self.stage == "UP":
                 self.stage = "DOWN"
                 self.counter += 1
                 self._record_speed()
 
         elif self.exercise_type == "PULLUP":
-            if joint_angle < 70:
+            if angle < 70:
                 self.stage = "UP"
-            if joint_angle > 160 and self.stage == "UP":
+            if angle > 160 and self.stage == "UP":
                 self.stage = "DOWN"
                 self.counter += 1
                 self._record_speed()

@@ -1,2 +1,10 @@
 venv/
 node_modules/
+venv/
+venv_rosetta/
+*.log
+*.txt
+venv/
+venv_rosetta/
+*.log
+*.txt

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Zap, Calendar, TrendingUp, Award, Clock, Play, ChevronRight, Dumbbell, Flame } from 'lucide-react'
+import { Zap, Calendar, TrendingUp, Award, Clock, Play, ChevronRight, Dumbbell, Flame, Sun, Moon, CloudSun } from 'lucide-react'
 import Navbar from '../components/layout/Navbar'
 import { useAuth } from '../context/AuthContext'
 import { getSessionsByUser, getStreak } from '../services/workoutService'
@@ -69,8 +69,15 @@ export default function DashboardPage() {
   const recentSessions = [...sessions].reverse().slice(0, 5)
 
   const greetingHour = new Date().getHours()
-  const greeting =
-    greetingHour < 12 ? 'Good morning' : greetingHour < 17 ? 'Good afternoon' : 'Good evening'
+  let greeting = 'Good morning'
+  let GreetingIcon = CloudSun
+  if (greetingHour >= 12 && greetingHour < 17) {
+    greeting = 'Good afternoon'
+    GreetingIcon = Sun
+  } else if (greetingHour >= 17) {
+    greeting = 'Good evening'
+    GreetingIcon = Moon
+  }
 
   return (
     <div style={{ minHeight: '100svh', background: '#0a0b0f' }}>
@@ -80,7 +87,9 @@ export default function DashboardPage() {
         <motion.div initial="hidden" animate="visible">
           {/* Header */}
           <motion.div variants={fadeUp} custom={0} style={{ marginBottom: '40px' }}>
-            <p style={{ color: '#6b7280', fontSize: '14px', margin: '0 0 6px' }}>{greeting} 👋</p>
+            <p style={{ color: '#6b7280', fontSize: '14px', margin: '0 0 6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <GreetingIcon size={16} /> {greeting}
+            </p>
             <h1 style={{ fontSize: 'clamp(28px, 4vw, 42px)', fontWeight: 800, color: '#f3f4f6', margin: '0 0 4px', letterSpacing: '-1.5px' }}>
               {user?.name || 'Athlete'}
             </h1>
@@ -170,7 +179,7 @@ export default function DashboardPage() {
             <StatCard
               icon={streak.currentStreak > 0 ? Flame : Award}
               label="STREAK"
-              value={loading ? '…' : `${streak.currentStreak}🔥`}
+              value={loading ? '…' : `${streak.currentStreak}`}
               sub={`best: ${streak.longestStreak} days`}
               color="#a855f7"
               delay={5}

@@ -33,10 +33,10 @@ public class StreakController {
     public ResponseEntity<Map<String, Object>> getMyStreak(Authentication authentication) {
         UserDetailsImpl principal = (UserDetailsImpl) authentication.getPrincipal();
         UserStreak streak = streakService.getStreak(principal.getId());
-        return ResponseEntity.ok(Map.of(
-                "currentStreak", streak.getCurrentStreak(),
-                "longestStreak", streak.getLongestStreak(),
-                "lastActiveDate", streak.getLastActiveDate() != null ? streak.getLastActiveDate().toString() : null
-        ));
+        Map<String, Object> response = new java.util.HashMap<>();
+        response.put("currentStreak", streak.getCurrentStreak());
+        response.put("longestStreak", streak.getLongestStreak());
+        response.put("lastActiveDate", streak.getLastActiveDate() != null ? streak.getLastActiveDate().toString() : null);
+        return ResponseEntity.ok(response);
     }
 }

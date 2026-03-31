@@ -1,115 +1,91 @@
-# RepMate
+# RepMate: AI-Powered Fitness Tracker
 
-RepMate is an AI-powered fitness tracking application designed to provide real-time feedback on user posture and rep counting during physical activities. By leveraging computer vision and machine learning, RepMate helps fitness enthusiasts maintain proper form and accurately track their progress without the need for manual logging.
+[![React](https://img.shields.io/badge/React-19-blue.svg)](https://react.dev/)
+[![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.4-green.svg)](https://spring.io/projects/spring-boot)
+[![MediaPipe](https://img.shields.io/badge/AI-MediaPipe-orange.svg)](https://google.github.io/mediapipe/)
+[![Privacy](https://img.shields.io/badge/Privacy-100%25_Local_Processing-purple.svg)]()
 
-## Project Overview
+RepMate is a cutting-edge fitness tracking application designed to provide real-time feedback on your form and precisely count your repetitions natively in your browser. By leveraging computer vision and mathematical movement smoothing, RepMate acts as your digital personal trainer—no hardware required.
 
-The project is divided into three primary modules:
-1.  **Backend**: A Spring Boot application handling user data, authentication, and workout session storage.
-2.  **Frontend**: A modern React-based user interface for live workout tracking and dashboard analytics.
-3.  **AI Module**: A Python-based real-time pose detection and rep counting engine.
+## Privacy Guarantee
+
+RepMate is built with **absolute privacy** as a core principle.
+1. **No Video Recording:** Your camera feed is processed ephemerally in local memory and instantly discarded.
+2. **Abstract Storage:** The database securely stores only numerical statistics (e.g., *15 Reps, 92% Accuracy, 2.4s Average Speed*). **No image frames or video streams are ever saved, uploaded, or analyzed outside the active session.**
+
+---
 
 ## Key Features
 
-- **Real-Time AI Tracking**: Utilizing MediaPipe for precise pose estimation and rep counting.
-- **Posture Analysis**: Instant feedback on body alignment to prevent injury and improve effectiveness.
-- **Multiple Exercise Support**: Currently supports PUSHUP and SQUAT exercise types with automatic logic switching.
-- **Progress Dashboard**: View cumulative statistics, recent sessions, and achievement milestones.
-- **Workout History**: Detailed logs of every session including reps, accuracy, and average speed.
-- **Streak System**: Gamified motivation through daily workout streaks.
-- **Secure Authentication**: Stateless JWT-based authentication for secure user profile management.
+- **Real-Time AI Tracking:** Utilizing Google's MediaPipe architecture for low-latency, hyper-accurate pose estimating over WebSockets.
+- **Exponential Moving Average (EMA) Integration:** Tracks joint angles using mathematical smoothing to eliminate jitter, false-positives, and camera glitches.
+- **Posture Analysis:** Instant feedback on body alignment to prevent injury and enforce biological movement curves.
+- **Multi-Exercise Support:** Currently supports Push-Ups, Squats, Bicep Curls, and Pull-Ups with dynamic logic mapping.
+- **Professional Aesthetics:** Modern React frontend featuring Framer Motion micro-animations and a sleek dark theme utilizing Lucide precision iconography.
+- **Gamified Consistency:** Built-in workout history, tracking metrics, and a dynamic daily streak system.
+
+---
 
 ## Technology Stack
 
-### Frontend
-- **React 19**: Modern UI library for building a responsive, stateful interface.
-- **Vite**: High-performance frontend build tool.
-- **Tailwind CSS 4**: Utility-first CSS framework for a sleek, dark-themed design.
-- **Framer Motion**: Advanced animation library for smooth transitions and interactive elements.
-- **Lucide React**: Professional-grade icon set.
+### Frontend Architecture
+- **React 19 & Vite**: Ultra-fast component rendering and unbundled development environment.
+- **Framer Motion**: Smooth, declarative UI transitions and layout animations.
+- **Lucide React**: Clean, lightweight, professional symbols replacing native emojis.
 
-### Backend
-- **Spring Boot 3.4**: Core framework for building robust, scalable REST APIs.
-- **Spring Security**: Integrated security framework for JWT-based auth and CORS management.
-- **Spring Data JPA / Hibernate**: Data persistence layer for PostgreSQL.
-- **Lombok**: Boilerplate reduction tool for cleaner Java code.
-- **PostgreSQL**: Industry-standard relational database.
+### Backend Services
+- **Spring Boot 3.4**: High-performance, secure REST API development framework.
+- **Spring Security & JWT**: Stateless web tokens enforcing strict authorization schemas.
+- **PostgreSQL**: Industry-standard robust relational database persistence.
 
-### AI Module
-- **Python 3.11**: Primary language for computer vision and machine learning tasks.
-- **FastAPI**: Lightweight framework for high-performance WebSockets.
-- **MediaPipe**: Google’s framework for building multimodal applied machine learning pipelines.
-- **OpenCV**: Open-source computer vision library for image processing.
-- **NumPy**: Numerical computing for geometric calculations (angles, alignment).
+### AI Processing Engine
+- **Python 3.11 & FastAPI**: Asynchronous framework handling concurrent high-throughput WebRTC/WebSocket streams.
+- **MediaPipe Pose**: High-fidelity holistic skeletal detection.
+- **NumPy EMA Filtering**: Vector-based mathematical geometry calculations with applied moving average filters.
 
-## Project Structure
-
-```text
-├── RepMate/
-│   ├── backend/        # Spring Boot REST API
-│   ├── frontend/       # React + Vite Application
-│   ├── ai-module/      # Python AI Engine
-│   ├── database/       # (Optional) SQL scripts or configuration
-│   └── docs/           # Project documentation and assets
-```
+---
 
 ## Installation and Setup
 
 ### Prerequisites
-- **Java 17** or higher
-- **Node.js 18** or higher (with npm)
-- **Python 3.11** or higher
-- **PostgreSQL 14** or higher
+Ensure your development environment contains:
+- **Java 17+**
+- **Node.js 18+**
+- **Python 3.11+**
+- **PostgreSQL 14+**
 
-### 1. Backend Setup
-1.  Navigate to the `backend` directory.
-2.  Configure your database credentials in `src/main/resources/application.properties` or set environment variables.
-3.  Ensure your `JAVA_HOME` is pointed to Java 17.
-4.  Run the application using Maven:
-    ```bash
-    ./mvnw spring-boot:run
-    ```
+### 1. Spring Boot Backend
+```bash
+cd backend
+# Database properties automatically default to localhost:5432
+./mvnw spring-boot:run
+```
 
-### 2. Frontend Setup
-1.  Navigate to the `frontend` directory.
-2.  Install dependencies:
-    ```bash
-    npm install
-    ```
-3.  Set the API and WebSocket URLs in a `.env` file:
-    ```text
-    VITE_API_URL=http://localhost:8080
-    VITE_WS_URL=ws://localhost:8000
-    ```
-4.  Launch the development server:
-    ```bash
-    npm run dev
-    ```
+### 2. React Desktop Frontend
+```bash
+cd frontend
+npm install
+npm run dev
+# The UI will launch at http://localhost:5173
+```
 
-### 3. AI Module Setup
-1.  Navigate to the `ai-module` directory.
-2.  Create and activate a virtual environment:
-    ```bash
-    python -m venv venv
-    source venv/bin/activate  # Or `venv\Scripts\activate` on Windows
-    ```
-3.  Install dependencies:
-    ```bash
-    pip install -r requirements.txt
-    ```
-4.  Start the FastAPI server:
-    ```bash
-    python app.py
-    ```
+### 3. FastAPI AI Tracking Module
+```bash
+cd ai-module
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+# Start the AI WebSocket listener
+python app.py
+```
+
+---
 
 ## Usage
+1. **Register** free of charge using the secure JWT authentication portal.
+2. **Navigate** to the Workout section and select your target exercise in the dropdown.
+3. **Position** your device camera horizontally capturing your full body and hit Start.
+4. **Train.** RepMate's AI natively processes your joints and provides real-time form correction.
+5. **Analyze** your sessions and track your daily progress streaks in the Dashboard.
 
-1.  **Register / Log In**: Use the Auth pages to create an account and manage your profile.
-2.  **Start Workout**: Navigate to the Live Workout page, select an exercise (PUSHUP or SQUAT), and start the session.
-3.  **Real-Time Tracking**: Align yourself in front of the camera. The AI will count reps and provide form feedback.
-4.  **Save Session**: Click 'Stop & Save' to upload your progress to the dashboard.
-5.  **View History**: Check the History page to analyze your performance and monitor your streaks.
-
-## License
-
-This project is licensed under the MIT License.
+*RepMate is distributed under the MIT License.*
