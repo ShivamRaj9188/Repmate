@@ -1,92 +1,295 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
 
-html, body, #root {
-  height: 100%;
-  width: 100%;
+@theme {
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --color-bg: #0a0b0f;
+  --color-surface: #111318;
+  --color-surface-2: #1a1c24;
+  --color-border: #1f2130;
+  --color-border-light: #2a2d3e;
+  --color-primary: #7c3aed;
+  --color-primary-hover: #6d28d9;
+  --color-primary-light: #a855f7;
+  --color-success: #22c55e;
+  --color-danger: #ef4444;
+  --color-warning: #f59e0b;
+  --color-text: #f3f4f6;
+  --color-muted: #9ca3af;
+  --color-subtle: #6b7280;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #0a0b0f;
+  color: #f3f4f6;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #10141a;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 #root {
-    max-width: none !important;
-    padding: 0 !important;
-    text-align: initial !important;
-  }
-
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0px 1000px #10141a inset !important;
-  -webkit-text-fill-color: #e4e6eb !important;
-  transition: background-color 9999s ease-in-out 0s;
+  width: 100%;
+  min-height: 100svh;
 }
 
-.font-orbitron {
-  font-family: "Orbitron", sans-serif;
+/* ───── Glassmorphism ───── */
+.glass {
+  background: rgba(17, 19, 24, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(42, 45, 62, 0.6);
 }
 
-.font-inter {
-  font-family: "Inter", sans-serif;
+.glass-card {
+  background: rgba(26, 28, 36, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(42, 45, 62, 0.5);
+  border-radius: 16px;
 }
 
-.nav-link {
-  transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s ease;
+/* ───── Gradient Text ───── */
+.gradient-text {
+  background: linear-gradient(135deg, #c084fc 0%, #a855f7 40%, #7c3aed 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.nav-link:hover {
-  color: #3ECF8E;
-  text-shadow: 0 0 6px rgba(62, 207, 142, 0.6), 0 0 10px rgba(62, 207, 142, 0.3);
-  transform: translateY(-2px);
+.gradient-text-gold {
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 60%, #d97706 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-@layer components {
-  .btn-primary {
-    @apply font-orbitron font-semibold;
-  }
-}
-
-.custom-checkbox input {
-  position: absolute;
-  opacity: 0;
+/* ───── Buttons ───── */
+.btn-primary {
+  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+  color: white;
+  padding: 12px 28px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 15px;
+  border: none;
   cursor: pointer;
-  height: 0;
-  width: 0;
+  transition: all 0.2s ease;
+  box-shadow: 0 0 24px rgba(124, 58, 237, 0.35);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.checkmark {
-  height: 18px;
-  width: 18px;
-  background-color: #12171e;
-  border: 2px solid #3ECF8E;
-  border-radius: 4px;
-  box-shadow: 0 0 4px rgba(62, 207, 142, 0.3);
-  transition: all 0.3s ease;
-  display: inline-block;
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 0 36px rgba(124, 58, 237, 0.55);
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: #9ca3af;
+  padding: 12px 28px;
+  border-radius: 10px;
+  font-weight: 500;
+  font-size: 15px;
+  border: 1px solid rgba(42, 45, 62, 0.8);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-ghost:hover:not(:disabled) {
+  border-color: #7c3aed;
+  color: #f3f4f6;
+  background: rgba(124, 58, 237, 0.08);
+}
+
+.btn-ghost:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+  padding: 12px 28px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 15px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.25);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-danger:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 0 32px rgba(239, 68, 68, 0.45);
+}
+
+/* ───── Input ───── */
+.input-field {
+  width: 100%;
+  padding: 13px 16px;
+  background: rgba(26, 28, 36, 0.9);
+  border: 1px solid rgba(42, 45, 62, 0.8);
+  border-radius: 10px;
+  color: #f3f4f6;
+  font-size: 15px;
+  font-family: 'Inter', inherit;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input-field:focus {
+  border-color: #7c3aed;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.18);
+}
+
+.input-field::placeholder {
+  color: #4b5563;
+}
+
+/* ───── Mesh Background ───── */
+.mesh-bg {
+  background:
+    radial-gradient(ellipse at 15% 20%, rgba(124, 58, 237, 0.18) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 75%, rgba(99, 102, 241, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(168, 85, 247, 0.06) 0%, transparent 70%),
+    #0a0b0f;
+}
+
+/* ───── Stat Cards ───── */
+.stat-card {
+  background: rgba(17, 19, 24, 0.9);
+  border: 1px solid rgba(42, 45, 62, 0.7);
+  border-radius: 16px;
+  padding: 24px;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(124, 58, 237, 0.4);
+  box-shadow: 0 8px 32px rgba(124, 58, 237, 0.12);
+}
+
+/* ───── Posture Badge Pulse ───── */
+@keyframes pulse-good {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
+}
+
+@keyframes pulse-bad {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+}
+
+.badge-good { animation: pulse-good 2s infinite; }
+.badge-bad { animation: pulse-bad 1s infinite; }
+
+/* ───── Scrollbar ───── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #111318; }
+::-webkit-scrollbar-thumb {
+  background: #2a2d3e;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover { background: #7c3aed; }
+
+/* ───── Animations ───── */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.float { animation: float 4s ease-in-out infinite; }
+
+/* ───── Rep Counter Ring ───── */
+.rep-ring {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  border: 4px solid rgba(124, 58, 237, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
+  background: rgba(124, 58, 237, 0.05);
+  box-shadow: 0 0 40px rgba(124, 58, 237, 0.2), inset 0 0 40px rgba(124, 58, 237, 0.05);
 }
 
-.custom-checkbox input:checked + .checkmark {
-  background-color: #3ECF8E;
-  box-shadow: 0 0 10px rgba(62, 207, 142, 0.6), 0 0 18px rgba(62, 207, 142, 0.3);
+/* ───── Navbar ───── */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  background: rgba(10, 11, 15, 0.85);
+  border-bottom: 1px solid rgba(42, 45, 62, 0.5);
 }
 
-.checkmark::after {
-  content: "";
+/* ───── Feature Card ───── */
+.feature-card {
+  background: rgba(17, 19, 24, 0.8);
+  border: 1px solid rgba(42, 45, 62, 0.5);
+  border-radius: 20px;
+  padding: 32px;
+  transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+  border-color: rgba(124, 58, 237, 0.5);
+  box-shadow: 0 16px 48px rgba(124, 58, 237, 0.1);
+  transform: translateY(-4px);
+}
+
+/* ───── HUD Overlay ───── */
+.hud-overlay {
   position: absolute;
-  display: none;
-  left: 5px;
-  top: 1px;
-  width: 4px;
-  height: 9px;
-  border: solid #10141a;
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
 }
 
-.custom-checkbox input:checked + .checkmark::after {
-  display: block;
+/* ───── Session Row ───── */
+.session-row {
+  background: rgba(17, 19, 24, 0.8);
+  border: 1px solid rgba(42, 45, 62, 0.5);
+  border-radius: 12px;
+  padding: 16px 20px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.session-row:hover {
+  border-color: rgba(124, 58, 237, 0.4);
+  background: rgba(26, 28, 36, 0.8);
 }
