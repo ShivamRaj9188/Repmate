@@ -3,6 +3,7 @@ package com.repmate.backend.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.time.LocalDateTime;
 
@@ -18,8 +19,11 @@ public class WorkoutSession {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // Fix: @JsonIgnoreProperties prevents LazyInitializationException when Jackson
+    // tries to serialize the lazy-loaded User outside of a transaction.
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "password", "role", "createdAt"})
     private User user;
 
     @NotBlank(message = "Exercise type is required")

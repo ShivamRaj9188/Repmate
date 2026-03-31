@@ -5,6 +5,7 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -21,8 +22,11 @@ public class ExerciseMetric {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // Fix: @JsonIgnoreProperties prevents LazyInitializationException when Jackson
+    // serializes the lazy-loaded WorkoutSession outside of a transaction.
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "session_id", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "user"})
     private WorkoutSession session;
 
     // Security Hardening: Validations prevent negative illogical inputs

@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Zap, Calendar, TrendingUp, Award, Clock, Play, ChevronRight, Dumbbell } from 'lucide-react'
+import { Zap, Calendar, TrendingUp, Award, Clock, Play, ChevronRight, Dumbbell, Flame } from 'lucide-react'
 import Navbar from '../components/layout/Navbar'
 import { useAuth } from '../context/AuthContext'
-import { getSessionsByUser } from '../services/workoutService'
+import { getSessionsByUser, getStreak } from '../services/workoutService'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -50,13 +50,19 @@ export default function DashboardPage() {
   const { user } = useAuth()
   const [sessions, setSessions] = useState([])
   const [loading, setLoading] = useState(true)
+  const [streak, setStreak] = useState({ currentStreak: 0, longestStreak: 0 })
 
   useEffect(() => {
     if (!user?.id) { setLoading(false); return }
-    getSessionsByUser(user.id)
-      .then(setSessions)
-      .catch(() => setSessions([]))
-      .finally(() => setLoading(false))
+
+    // Load sessions and streak in parallel
+    Promise.all([
+      getSessionsByUser(user.id).catch(() => []),
+      getStreak().catch(() => ({ currentStreak: 0, longestStreak: 0 })),
+    ]).then(([sessionData, streakData]) => {
+      setSessions(sessionData)
+      setStreak(streakData)
+    }).finally(() => setLoading(false))
   }, [user])
 
   const completedSessions = sessions.filter((s) => s.status === 'COMPLETED')
@@ -160,7 +166,15 @@ export default function DashboardPage() {
             <StatCard icon={Calendar} label="TOTAL SESSIONS" value={sessions.length} sub="all time" color="#7c3aed" delay={2} />
             <StatCard icon={Zap} label="COMPLETED" value={completedSessions.length} sub="finished sessions" color="#22c55e" delay={3} />
             <StatCard icon={TrendingUp} label="IN PROGRESS" value={sessions.filter((s) => s.status === 'IN_PROGRESS').length} sub="active sessions" color="#f59e0b" delay={4} />
-            <StatCard icon={Award} label="STREAK" value="—" sub="feature coming soon" color="#a855f7" delay={5} />
+            {/* Fix: streak now shows real live data from GET /api/streaks/me */}
+            <StatCard
+              icon={streak.currentStreak > 0 ? Flame : Award}
+              label="STREAK"
+              value={loading ? '…' : `${streak.currentStreak}🔥`}
+              sub={`best: ${streak.longestStreak} days`}
+              color="#a855f7"
+              delay={5}
+            />
           </div>
 
           {/* Recent Sessions */}

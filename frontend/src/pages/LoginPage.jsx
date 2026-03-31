@@ -26,9 +26,9 @@ export default function LoginPage() {
     } catch (err) {
       setError(
         err.response?.data?.message ||
-          err.response?.status === 401
-          ? 'Invalid email or password.'
-          : 'Something went wrong. Please try again.'
+          (err.response?.status === 401
+            ? 'Invalid email or password.'
+            : 'Something went wrong. Please try again.')
       )
     } finally {
       setLoading(false)

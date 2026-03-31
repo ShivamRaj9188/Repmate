@@ -7,7 +7,7 @@ import CameraFeed from '../components/workout/CameraFeed'
 import RepHUD from '../components/workout/RepHUD'
 import ExercisePicker from '../components/workout/ExercisePicker'
 import { useAuth } from '../context/AuthContext'
-import { createSession, saveMetrics } from '../services/workoutService'
+import { createSession, saveMetrics, completeSession } from '../services/workoutService'
 
 const WS_URL = import.meta.env.VITE_WS_URL || 'ws://localhost:8000'
 const FPS = 12 // frames per second sent to AI module
@@ -33,13 +33,24 @@ export default function WorkoutPage() {
   const displayCanvasRef = useRef(null)
   const wsRef = useRef(null)
   const frameLoopRef = useRef(null)
+  // Keep a ref to repCount / speed so stopWorkout (which closes over stale state) gets fresh values
+  const repCountRef = useRef(0)
+  const speedRef = useRef(0)
+  const goodPostureRef = useRef(0)
+  const totalPostureRef = useRef(0)
 
   const showToast = useCallback((msg, type = 'info') => {
     setToast({ msg, type })
     setTimeout(() => setToast(null), 4000)
   }, [])
 
-  // Render AI frame onto display canvas
+  // Keep refs in sync with state so closures inside WebSocket handlers stay fresh
+  useEffect(() => { repCountRef.current = repCount }, [repCount])
+  useEffect(() => { speedRef.current = speed }, [speed])
+  useEffect(() => { goodPostureRef.current = goodPostureCount }, [goodPostureCount])
+  useEffect(() => { totalPostureRef.current = totalPostureFrames }, [totalPostureFrames])
+
+  // Render AI-annotated frame onto display canvas
   const renderFrame = useCallback((base64Frame) => {
     const canvas = displayCanvasRef.current
     if (!canvas) return
@@ -59,6 +70,10 @@ export default function WorkoutPage() {
     setSpeed(0)
     setGoodPostureCount(0)
     setTotalPostureFrames(0)
+    repCountRef.current = 0
+    speedRef.current = 0
+    goodPostureRef.current = 0
+    totalPostureRef.current = 0
 
     // Create session in backend
     let sid = null
@@ -79,12 +94,16 @@ export default function WorkoutPage() {
 
     ws.onopen = () => {
       setWsStatus('connected')
+      // Fix: send exercise type as JSON init handshake so AI uses the correct counting logic
+      ws.send(JSON.stringify({ type: 'init', exercise }))
       startFrameLoop()
     }
 
     ws.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data)
+        // Ignore ack messages from AI init handshake
+        if (data.type === 'ack') return
         if (data.frame) renderFrame(data.frame)
         if (data.count !== undefined) setRepCount(data.count)
         if (data.stage) setStage(data.stage)
@@ -94,13 +113,13 @@ export default function WorkoutPage() {
           if (data.posture_status === 'GOOD') setGoodPostureCount((p) => p + 1)
         }
         if (data.speed !== undefined) setSpeed(data.speed)
-      } catch { /* ignore malformed message */ }
+      } catch { /* ignore malformed messages */ }
     }
 
     ws.onerror = () => setWsStatus('error')
     ws.onclose = () => {
-      if (wsStatus !== 'idle') setWsStatus('idle')
       stopFrameLoop()
+      setWsStatus('idle')
     }
   }
 
@@ -130,18 +149,26 @@ export default function WorkoutPage() {
     setIsRunning(false)
     setWsStatus('idle')
 
-    // Save metrics
-    if (sessionId && repCount > 0) {
+    const finalReps = repCountRef.current
+    const finalSpeed = speedRef.current
+    const finalGood = goodPostureRef.current
+    const finalTotal = totalPostureRef.current
+
+    // Save metrics + mark session COMPLETED
+    if (sessionId && finalReps > 0) {
       setIsSaving(true)
       try {
-        const accuracy = totalPostureFrames > 0
-          ? parseFloat(((goodPostureCount / totalPostureFrames) * 100).toFixed(2))
+        const accuracy = finalTotal > 0
+          ? parseFloat(((finalGood / finalTotal) * 100).toFixed(2))
           : 0
-        await saveMetrics(sessionId, repCount, speed || 0, accuracy)
+        // Save metrics
+        await saveMetrics(sessionId, finalReps, finalSpeed || 0, accuracy)
+        // Fix: mark session as COMPLETED (was permanently IN_PROGRESS)
+        await completeSession(sessionId)
         showToast('Session saved! Great work 💪', 'success')
         setTimeout(() => navigate('/history'), 1500)
       } catch {
-        showToast('Could not save metrics — backend may be offline', 'error')
+        showToast('Could not save session — backend may be offline', 'error')
       } finally {
         setIsSaving(false)
       }

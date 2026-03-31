@@ -15,6 +15,15 @@ export const createSession = async (userId, exerciseType) => {
 }
 
 /**
+ * Mark a session as COMPLETED — PATCH /api/sessions/{id}/complete
+ * Fix: previously sessions were forever stuck as IN_PROGRESS
+ */
+export const completeSession = async (sessionId) => {
+  const response = await api.patch(`/api/sessions/${sessionId}/complete`)
+  return response.data
+}
+
+/**
  * Get all sessions for a user — GET /api/sessions/user/{userId}
  */
 export const getSessionsByUser = async (userId) => {
@@ -48,5 +57,13 @@ export const saveMetrics = async (sessionId, reps, avgSpeed, accuracy) => {
  */
 export const getMetricsBySession = async (sessionId) => {
   const response = await api.get(`/api/metrics/session/${sessionId}`)
+  return response.data
+}
+
+/**
+ * Get the authenticated user's workout streak — GET /api/streaks/me
+ */
+export const getStreak = async () => {
+  const response = await api.get('/api/streaks/me')
   return response.data
 }

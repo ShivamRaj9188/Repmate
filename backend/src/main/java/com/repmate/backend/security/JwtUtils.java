@@ -41,9 +41,10 @@ public class JwtUtils {
 
     public boolean validateJwtToken(String authToken) {
         try {
-            Jwts.parserBuilder().setSigningKey(key()).build().parse(authToken);
+            Jwts.parserBuilder().setSigningKey(key()).build().parseClaimsJws(authToken);
             return true;
-        } catch (MalformedJwtException | IllegalArgumentException | ExpiredJwtException | UnsupportedJwtException e) {
+        } catch (MalformedJwtException | IllegalArgumentException | ExpiredJwtException
+                 | UnsupportedJwtException | io.jsonwebtoken.security.SignatureException e) {
             System.err.println("Invalid JWT Token: " + e.getMessage());
         }
         return false;
