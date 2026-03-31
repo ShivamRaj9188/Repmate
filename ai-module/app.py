@@ -113,6 +113,9 @@ async def websocket_workout(websocket: WebSocket):
                 elif exercise_type == "SQUAT":
                     knee_angle = rep_counter.calculate_angle(l_hip, l_knee, l_ankle)
                     count = rep_counter.count_rep(knee_angle)
+                elif exercise_type in ("CURL", "PULLUP"):
+                    elbow_angle = rep_counter.calculate_angle(l_shoulder, l_elbow, l_wrist)
+                    count = rep_counter.count_rep(elbow_angle)
 
                 stage = rep_counter.stage
 

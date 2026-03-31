@@ -2,9 +2,9 @@ import { ChevronDown } from 'lucide-react'
 
 const EXERCISES = [
   { value: 'PUSHUP', label: 'Push-Ups', emoji: '💪', available: true },
-  { value: 'SQUAT', label: 'Squats', emoji: '🦵', available: false },
-  { value: 'CURL', label: 'Bicep Curls', emoji: '🏋️', available: false },
-  { value: 'PULLUP', label: 'Pull-Ups', emoji: '⬆️', available: false },
+  { value: 'SQUAT', label: 'Squats', emoji: '🦵', available: true },
+  { value: 'CURL', label: 'Bicep Curls', emoji: '🏋️', available: true },
+  { value: 'PULLUP', label: 'Pull-Ups', emoji: '⬆️', available: true },
 ]
 
 export default function ExercisePicker({ value, onChange, disabled }) {

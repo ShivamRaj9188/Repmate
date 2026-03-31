@@ -7,12 +7,20 @@ class RepCounter:
     RepCounter supports PUSHUP and SQUAT exercise types.
 
     PUSHUP: counts using elbow angle (arm extension/flexion)
-      - UP stage: elbow_angle > 160 (arms extended)
-      - DOWN stage: elbow_angle < 90 (arms bent) → rep counted
+      - DOWN stage: elbow_angle < 90 (arms bent)
+      - UP stage: elbow_angle > 160 (arms extended) → rep counted
 
     SQUAT: counts using knee angle (leg extension/flexion)
-      - UP stage: knee_angle > 160 (legs extended / standing)
-      - DOWN stage: knee_angle < 90 (legs bent / squatting) → rep counted
+      - DOWN stage: knee_angle < 90 (legs bent / squatting)
+      - UP stage: knee_angle > 160 (legs extended / standing) → rep counted
+
+    CURL: counts using elbow angle (bicep flexion)
+      - UP stage: elbow_angle < 45 (arms curled)
+      - DOWN stage: elbow_angle > 160 (arms extended) → rep counted
+
+    PULLUP: counts using elbow angle (arm flexion/extension)
+      - UP stage: elbow_angle < 70 (chin above bar)
+      - DOWN stage: elbow_angle > 160 (arms fully extended) → rep counted
     """
 
     def __init__(self, exercise_type="PUSHUP"):
@@ -48,18 +56,40 @@ class RepCounter:
     def count_rep(self, joint_angle):
         """
         Counts a rep based on the primary joint angle for the exercise type.
-          - PUSHUP uses elbow angle
-          - SQUAT uses knee angle
-        Both use the same two-stage (UP → DOWN) state machine.
+        Supports: PUSHUP, SQUAT, CURL, PULLUP.
         """
-        if self.exercise_type in ("PUSHUP", "SQUAT"):
-            if joint_angle > 160:
+        # --- Logic: Count on full range completion ---
+        if self.exercise_type == "PUSHUP":
+            if joint_angle < 90:
+                self.stage = "DOWN"
+            if joint_angle > 160 and self.stage == "DOWN":
                 self.stage = "UP"
-            if joint_angle < 90 and self.stage == "UP":
+                self.counter += 1
+                self._record_speed()
+
+        elif self.exercise_type == "SQUAT":
+            if joint_angle < 90:
+                self.stage = "DOWN"
+            if joint_angle > 160 and self.stage == "DOWN":
+                self.stage = "UP"
+                self.counter += 1
+                self._record_speed()
+
+        elif self.exercise_type == "CURL":
+            if joint_angle < 45:
+                self.stage = "UP"
+            if joint_angle > 160 and self.stage == "UP":
                 self.stage = "DOWN"
                 self.counter += 1
                 self._record_speed()
 
+        elif self.exercise_type == "PULLUP":
+            if joint_angle < 70:
+                self.stage = "UP"
+            if joint_angle > 160 and self.stage == "UP":
+                self.stage = "DOWN"
+                self.counter += 1
+                self._record_speed()
         return self.counter
 
     def _record_speed(self):
