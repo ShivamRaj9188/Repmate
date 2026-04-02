@@ -88,4 +88,3 @@ python app.py
 4. **Train.** RepMate's AI natively processes your joints and provides real-time form correction.
 5. **Analyze** your sessions and track your daily progress streaks in the Dashboard.
 
-*RepMate is distributed under the MIT License.*
