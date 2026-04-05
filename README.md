@@ -20,9 +20,12 @@ RepMate is built with **absolute privacy** as a core principle.
 - **Real-Time AI Tracking:** Utilizing Google's MediaPipe architecture for low-latency, hyper-accurate pose estimating over WebSockets.
 - **Exponential Moving Average (EMA) Integration:** Tracks joint angles using mathematical smoothing to eliminate jitter, false-positives, and camera glitches.
 - **Posture Analysis:** Instant feedback on body alignment to prevent injury and enforce biological movement curves.
+- **Personalized Diet Generation:** Automatically constructs custom 7-day meal plans based on individual body metrics, goals, and dietary preferences.
+- **Curated Video Library:** Built-in access to high-quality workout tutorials and routines seamlessly integrated into the application dashboard.
 - **Multi-Exercise Support:** Currently supports Push-Ups, Squats, Bicep Curls, and Pull-Ups with dynamic logic mapping.
-- **Professional Aesthetics:** Modern React frontend featuring Framer Motion micro-animations and a sleek dark theme utilizing Lucide precision iconography.
-- **Gamified Consistency:** Built-in workout history, tracking metrics, and a dynamic daily streak system.
+- **Professional Aesthetics:** Modern React frontend featuring Framer Motion micro-animations and a sleek dark theme prioritizing Lucide precision iconography.
+- **Gamified Consistency:** Built-in workout history, tracking metrics, and a dynamic milestone streak system to encourage daily activity.
+
 
 ---
 
@@ -82,9 +85,10 @@ python app.py
 ---
 
 ## Usage
-1. **Register** free of charge using the secure JWT authentication portal.
-2. **Navigate** to the Workout section and select your target exercise in the dropdown.
-3. **Position** your device camera horizontally capturing your full body and hit Start.
-4. **Train.** RepMate's AI natively processes your joints and provides real-time form correction.
-5. **Analyze** your sessions and track your daily progress streaks in the Dashboard.
+1. **Register** free of charge using the secure JWT authentication portal and complete your profile onboarding metrics.
+2. **Explore** the personalized Diet Plans and Curated Video Library generated from your health goals.
+3. **Navigate** to the Workout section and select your target exercise.
+4. **Position** your device camera horizontally capturing your full body and hit Start.
+5. **Train.** RepMate's AI natively processes your joints and provides real-time form correction.
+6. **Analyze** your sessions and track your daily streak milestones over time in the Dashboard.
 
