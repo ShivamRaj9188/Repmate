@@ -64,25 +64,36 @@ const CameraFeed = forwardRef(function CameraFeed(
 
   return (
     <div style={{ position: 'relative', width: '100%', aspectRatio: '4/3', borderRadius: '16px', overflow: 'hidden', background: '#0a0b0f' }}>
-      {/* Hidden video element for capture */}
-      <video
-        ref={videoRef}
-        style={{ display: 'none' }}
-        playsInline
-        muted
-      />
-
       {/* Hidden canvas for frame extraction */}
       <canvas ref={captureCanvasRef} style={{ display: 'none' }} />
 
-      {/* Display canvas — shows AI-annotated frames */}
-      <canvas
-        ref={displayCanvasRef}
+      {/* Local video — always visible when active so user sees themselves immediately */}
+      <video
+        ref={videoRef}
         style={{
+          position: 'absolute',
+          inset: 0,
           width: '100%',
           height: '100%',
           objectFit: 'cover',
           display: isActive ? 'block' : 'none',
+          transform: 'scaleX(-1)',
+        }}
+        playsInline
+        muted
+      />
+
+      {/* Display canvas — overlays AI-annotated frames on top of local video */}
+      <canvas
+        ref={displayCanvasRef}
+        style={{
+          position: 'absolute',
+          inset: 0,
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          display: isActive ? 'block' : 'none',
+          transform: 'scaleX(-1)',
         }}
       />
 
