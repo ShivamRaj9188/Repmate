@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronDown, ChevronUp, Dumbbell, Clock, Zap, Target, BarChart3, Plus } from 'lucide-react'
+import { ChevronDown, ChevronUp, Dumbbell, Clock, Zap, Target, BarChart3, Plus, Flame } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import Navbar from '../components/layout/Navbar'
 import { useAuth } from '../context/AuthContext'
 import { getSessionsByUser, getMetricsBySession } from '../services/workoutService'
+import { getStreakHistory } from '../services/profileService'
+import StreakHeatmap from '../components/workout/StreakHeatmap'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 16 },
@@ -204,13 +206,17 @@ export default function HistoryPage() {
   const [sessions, setSessions] = useState([])
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState('ALL')
+  const [activeDates, setActiveDates] = useState([])
 
   useEffect(() => {
     if (!user?.id) { setLoading(false); return }
-    getSessionsByUser(user.id)
-      .then((data) => setSessions([...data].reverse()))
-      .catch(() => setSessions([]))
-      .finally(() => setLoading(false))
+    Promise.all([
+      getSessionsByUser(user.id).catch(() => []),
+      getStreakHistory().catch(() => []),
+    ]).then(([sessionData, dateData]) => {
+      setSessions([...sessionData].reverse())
+      setActiveDates(dateData)
+    }).finally(() => setLoading(false))
   }, [user])
 
   const filtered = filter === 'ALL' ? sessions : sessions.filter((s) => s.status === filter)
@@ -253,8 +259,22 @@ export default function HistoryPage() {
             </Link>
           </motion.div>
 
+          {/* Streak Heatmap */}
+          {activeDates.length > 0 && (
+            <motion.div variants={fadeUp} custom={1} style={{ marginBottom: '32px', background: 'rgba(17,19,24,0.9)', border: '1px solid rgba(42,45,62,0.6)', borderRadius: '20px', padding: '24px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '18px' }}>
+                <Flame size={16} color="#f59e0b" />
+                <span style={{ fontSize: '14px', fontWeight: 700, color: '#d1d5db' }}>Activity Heatmap</span>
+                <span style={{ fontSize: '12px', color: '#4b5563', marginLeft: '4px' }}>Last 6 months</span>
+              </div>
+              <div style={{ overflowX: 'auto', paddingBottom: '4px' }}>
+                <StreakHeatmap activeDates={activeDates} weeks={26} />
+              </div>
+            </motion.div>
+          )}
+
           {/* Filter tabs */}
-          <motion.div variants={fadeUp} custom={1} style={{ display: 'flex', gap: '8px', marginBottom: '28px', flexWrap: 'wrap' }}>
+          <motion.div variants={fadeUp} custom={2} style={{ display: 'flex', gap: '8px', marginBottom: '28px', flexWrap: 'wrap' }}>
             {['ALL', 'COMPLETED', 'IN_PROGRESS'].map((f) => (
               <button
                 key={f}

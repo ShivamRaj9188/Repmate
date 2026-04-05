@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Dumbbell, Brain, ShieldCheck, TrendingUp, Zap, ArrowRight, Play } from 'lucide-react'
+import { Dumbbell, Brain, ShieldCheck, TrendingUp, Zap, ArrowRight, Play, Salad, Flame, PlayCircle } from 'lucide-react'
 
 const features = [
   {
@@ -18,11 +18,25 @@ const features = [
     glow: 'rgba(34,197,94,0.2)',
   },
   {
-    icon: TrendingUp,
-    title: 'Progress Tracking',
-    desc: 'Every session saved. Track your rep counts, speed, accuracy, and watch your performance improve over time.',
+    icon: Salad,
+    title: 'Personalised Diet Plans',
+    desc: 'Get a comprehensive 7-day meal plan generated from your body stats, fitness goals, and dietary preferences.',
     color: '#f59e0b',
     glow: 'rgba(245,158,11,0.2)',
+  },
+  {
+    icon: Flame,
+    title: 'Streak Tracking',
+    desc: 'Every session saved. Track your rep counts, speed, accuracy, and build your completion streak over time.',
+    color: '#ef4444',
+    glow: 'rgba(239,68,68,0.2)',
+  },
+  {
+    icon: PlayCircle,
+    title: 'Workout Video Library',
+    desc: 'Access a curated collection of workout routines and tutorials seamlessly from your dashboard.',
+    color: '#3b82f6',
+    glow: 'rgba(59,130,246,0.2)',
   },
 ]
 
@@ -200,7 +214,7 @@ export default function LandingPage() {
             }}
           >
             RepMate uses real-time AI pose detection to count your reps, analyze your form,
-            and track your progress — all through your webcam.
+            generate personalized diet plans, and track your progress—all from one platform.
           </motion.p>
 
           {/* CTAs */}
@@ -292,7 +306,7 @@ export default function LandingPage() {
               <span className="gradient-text">level up</span>
             </h2>
             <p style={{ color: '#6b7280', fontSize: '16px', maxWidth: '480px', margin: '0 auto' }}>
-              Powered by MediaPipe pose estimation running in real-time on your webcam feed.
+              Comprehensive tracking, personalized diets, and AI pose estimation all in one place.
             </p>
           </motion.div>
 

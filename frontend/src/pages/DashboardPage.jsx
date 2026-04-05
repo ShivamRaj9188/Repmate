@@ -50,7 +50,7 @@ export default function DashboardPage() {
   const { user } = useAuth()
   const [sessions, setSessions] = useState([])
   const [loading, setLoading] = useState(true)
-  const [streak, setStreak] = useState({ currentStreak: 0, longestStreak: 0 })
+  const [streak, setStreak] = useState({ currentStreak: 0, longestStreak: 0, streakAtRisk: false, milestoneBadge: '' })
 
   useEffect(() => {
     if (!user?.id) { setLoading(false); return }
@@ -99,6 +99,50 @@ export default function DashboardPage() {
                 : `You've completed ${completedSessions.length} workout${completedSessions.length !== 1 ? 's' : ''} so far.`}
             </p>
           </motion.div>
+
+          {/* Streak at-risk banner */}
+          {!loading && streak.streakAtRisk && streak.currentStreak > 0 && (
+            <motion.div
+              variants={fadeUp}
+              custom={0.5}
+              style={{
+                display: 'flex', alignItems: 'center', gap: '12px',
+                padding: '14px 20px', borderRadius: '14px',
+                background: 'rgba(245,158,11,0.08)',
+                border: '1px solid rgba(245,158,11,0.35)',
+                marginBottom: '24px',
+              }}
+            >
+              <Flame size={18} color="#f59e0b" style={{ flexShrink: 0 }} />
+              <div>
+                <div style={{ fontWeight: 700, color: '#f59e0b', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '4px' }}><Flame size={16} fill="currentColor" /> Streak at risk!</div>
+                <div style={{ color: '#9ca3af', fontSize: '13px', marginTop: '2px' }}>
+                  Log a workout today to keep your {streak.currentStreak}-day streak alive.
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Milestone badge */}
+          {!loading && streak.milestoneBadge && (
+            <motion.div
+              variants={fadeUp}
+              custom={0.6}
+              style={{
+                display: 'flex', alignItems: 'center', gap: '12px',
+                padding: '14px 20px', borderRadius: '14px',
+                background: 'rgba(168,85,247,0.08)',
+                border: '1px solid rgba(168,85,247,0.35)',
+                marginBottom: '24px',
+              }}
+            >
+              <Award size={18} color="#a855f7" style={{ flexShrink: 0 }} />
+              <div>
+                <div style={{ fontWeight: 700, color: '#a855f7', fontSize: '14px' }}>Milestone unlocked!</div>
+                <div style={{ color: '#9ca3af', fontSize: '13px', marginTop: '2px' }}>{streak.milestoneBadge}</div>
+              </div>
+            </motion.div>
+          )}
 
           {/* Start Workout CTA */}
           <motion.div variants={fadeUp} custom={1} style={{ marginBottom: '40px' }}>
