@@ -28,6 +28,10 @@ public class SecurityConfig {
     @Autowired
     private AuthEntryPointJwt unauthorizedHandler;
 
+    // SECURITY: Rate-limit filter runs before any auth processing
+    @Autowired
+    private RateLimitFilter rateLimitFilter;
+
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
         return new AuthTokenFilter();
@@ -77,6 +81,8 @@ public class SecurityConfig {
             );
 
         http.authenticationProvider(authenticationProvider());
+        // Rate limiting runs first (before JWT parsing) to reject floods early
+        http.addFilterBefore(rateLimitFilter, UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

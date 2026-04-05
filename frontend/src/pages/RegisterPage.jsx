@@ -25,7 +25,7 @@ export default function RegisterPage() {
     try {
       await registerApi(name, email, password)
       setSuccess(true)
-      setTimeout(() => navigate('/login'), 2000)
+      setTimeout(() => navigate('/onboarding'), 1500)
     } catch (err) {
       setError(
         err.response?.data?.message || 'Registration failed. Please try again.'
@@ -87,7 +87,7 @@ export default function RegisterPage() {
               style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '14px 16px', background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.35)', borderRadius: '10px', marginBottom: '20px', color: '#22c55e', fontSize: '14px', fontWeight: 500 }}
             >
               <CheckCircle2 size={16} />
-              Account created! Redirecting to login…
+              Account created! Setting up your profile…
             </motion.div>
           )}
 
