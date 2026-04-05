@@ -1,10 +1,31 @@
+# Python virtual environments
 venv/
+venv_rosetta/
+__pycache__/
+*.pyc
+*.pyo
+
+# Node
 node_modules/
-venv/
-venv_rosetta/
+dist/
+
+# Logs
 *.log
-*.txt
-venv/
-venv_rosetta/
-*.log
-*.txt
+
+# ──────────────────────────────────────────────────────────────────
+# SECURITY: .env files contain secrets (DB passwords, JWT secret).
+# These must NEVER be committed. Use .env.example as documentation.
+# ──────────────────────────────────────────────────────────────────
+.env
+.env.local
+.env.*.local
+backend/.env
+frontend/.env
+ai-module/.env
+
+# IDE / OS
+.DS_Store
+.vscode/settings.json
+*.iml
+.idea/
+
