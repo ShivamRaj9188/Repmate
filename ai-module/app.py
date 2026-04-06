@@ -1,6 +1,9 @@
 import os
 import json
 import time
+import ssl
+import uvicorn
+ssl._create_default_https_context = ssl._create_unverified_context
 from collections import Counter, defaultdict
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -240,3 +243,6 @@ async def websocket_workout(websocket: WebSocket):
 
     except WebSocketDisconnect:
         print(f"[AI] Client disconnected (exercise: {exercise_type})")
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)
