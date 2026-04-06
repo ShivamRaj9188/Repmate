@@ -5,6 +5,7 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -23,7 +24,13 @@ public class ProfileUpdateRequest {
 
     // ── Personal Info ────────────────────────────────────────────────────────
 
+    @Size(min = 2, max = 50, message = "Name must be between 2 and 50 characters")
+    @Pattern(regexp = "^[A-Za-z ]+$", message = "Name can only contain letters and spaces")
     private String name;
+    
+    @Size(max = 1048576, message = "Profile picture payload is too large, maximum allowed is ~750KB")
+    @Pattern(regexp = "^(data:image/(jpeg|png|webp);base64,[A-Za-z0-9+/=]+)?$", message = "Invalid profile picture format. Must be a valid base64 image (jpeg, png, webp)")
+    private String profilePicture;
 
     // ── Numeric body stats ───────────────────────────────────────────────────
 

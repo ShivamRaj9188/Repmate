@@ -40,6 +40,7 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User not found: " + userId));
 
         if (req.getName()               != null) user.setName(req.getName());
+        if (req.getProfilePicture()     != null) user.setProfilePicture(req.getProfilePicture());
         if (req.getAge()                != null) user.setAge(req.getAge());
         if (req.getHeightCm()           != null) user.setHeightCm(req.getHeightCm());
         if (req.getWeightKg()           != null) user.setWeightKg(req.getWeightKg());

@@ -42,6 +42,9 @@ public class User {
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
+    @Column(name = "profile_picture", columnDefinition = "TEXT")
+    private String profilePicture;
+
     // ── Questionnaire / Onboarding profile fields ────────────────────────
     @Column
     private Integer age;

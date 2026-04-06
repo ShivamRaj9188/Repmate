@@ -77,6 +77,7 @@ public class UserController {
         m.put("id", user.getId());
         m.put("name", user.getName());
         m.put("email", user.getEmail());
+        m.put("profilePicture", user.getProfilePicture());
         m.put("role", user.getRole());
         m.put("createdAt", user.getCreatedAt());
         m.put("age", user.getAge());
