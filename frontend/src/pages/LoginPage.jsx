@@ -130,6 +130,7 @@ export default function LoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
+                  maxLength={254}
                   style={{ paddingLeft: '42px' }}
                 />
               </div>
@@ -150,6 +151,8 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
+                  minLength={8}
+                  maxLength={128}
                   style={{ paddingLeft: '42px', paddingRight: '44px' }}
                 />
                 <button

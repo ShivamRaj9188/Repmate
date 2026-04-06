@@ -258,10 +258,10 @@ export default function OnboardingPage() {
                   </div>
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '10px' }}>
                     {[
-                      { key: 'age',      label: 'Age', placeholder: '25', suffix: 'yrs' },
-                      { key: 'heightCm', label: 'Height', placeholder: '175', suffix: 'cm' },
-                      { key: 'weightKg', label: 'Weight', placeholder: '70', suffix: 'kg' },
-                    ].map(({ key, label, placeholder, suffix }) => (
+                      { key: 'age',      label: 'Age', placeholder: '25', suffix: 'yrs', min: 13, max: 120 },
+                      { key: 'heightCm', label: 'Height', placeholder: '175', suffix: 'cm', min: 50, max: 300 },
+                      { key: 'weightKg', label: 'Weight', placeholder: '70', suffix: 'kg', min: 20, max: 500 },
+                    ].map(({ key, label, placeholder, suffix, min, max }) => (
                       <div key={key}>
                         <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#6b7280', marginBottom: '6px', letterSpacing: '0.5px' }}>{label.toUpperCase()}</label>
                         <div style={{ position: 'relative' }}>
@@ -271,6 +271,9 @@ export default function OnboardingPage() {
                             placeholder={placeholder}
                             value={data[key]}
                             onChange={e => set(key, e.target.value)}
+                            min={min}
+                            max={max}
+                            required
                             style={{ paddingRight: '36px' }}
                           />
                           <span style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', fontSize: '12px', color: '#4b5563' }}>{suffix}</span>
