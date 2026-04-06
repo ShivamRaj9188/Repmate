@@ -201,6 +201,21 @@ function SessionCard({ session, index }) {
   )
 }
 
+function SkeletonCard() {
+  return (
+    <div style={{ borderRadius: '16px', border: '1px solid rgba(42,45,62,0.6)', background: 'rgba(17,19,24,0.9)', padding: '18px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+        <div style={{ width: '44px', height: '44px', borderRadius: '12px', background: 'rgba(42,45,62,0.4)', animation: 'shimmer 1.5s infinite linear', backgroundImage: 'linear-gradient(90deg,transparent 0%,rgba(255,255,255,0.04) 50%,transparent 100%)', backgroundSize: '200% 100%' }} />
+        <div>
+          <div style={{ height: '16px', width: '140px', borderRadius: '6px', background: 'rgba(42,45,62,0.4)', marginBottom: '8px', animation: 'shimmer 1.5s infinite linear', backgroundImage: 'linear-gradient(90deg,transparent 0%,rgba(255,255,255,0.04) 50%,transparent 100%)', backgroundSize: '200% 100%' }} />
+          <div style={{ height: '12px', width: '100px', borderRadius: '6px', background: 'rgba(42,45,62,0.3)', animation: 'shimmer 1.5s infinite linear', backgroundImage: 'linear-gradient(90deg,transparent 0%,rgba(255,255,255,0.04) 50%,transparent 100%)', backgroundSize: '200% 100%' }} />
+        </div>
+      </div>
+      <div style={{ height: '24px', width: '80px', borderRadius: '6px', background: 'rgba(42,45,62,0.4)', animation: 'shimmer 1.5s infinite linear', backgroundImage: 'linear-gradient(90deg,transparent 0%,rgba(255,255,255,0.04) 50%,transparent 100%)', backgroundSize: '200% 100%' }} />
+    </div>
+  )
+}
+
 export default function HistoryPage() {
   const { user } = useAuth()
   const [sessions, setSessions] = useState([])
@@ -298,8 +313,8 @@ export default function HistoryPage() {
 
           {/* Session list */}
           {loading ? (
-            <div style={{ display: 'flex', justifyContent: 'center', padding: '60px 0' }}>
-              <div style={{ width: '36px', height: '36px', border: '3px solid rgba(124,58,237,0.2)', borderTop: '3px solid #7c3aed', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <SkeletonCard /><SkeletonCard /><SkeletonCard /><SkeletonCard />
             </div>
           ) : filtered.length === 0 ? (
             <motion.div
@@ -332,7 +347,10 @@ export default function HistoryPage() {
         </motion.div>
       </main>
 
-      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+      <style>{`
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes shimmer { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
+      `}</style>
     </div>
   )
 }

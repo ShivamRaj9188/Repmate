@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Volume2, VolumeX, Activity } from 'lucide-react'
+import { Volume2, VolumeX, Activity, CheckCircle, AlertTriangle, XCircle } from 'lucide-react'
 
 /**
  * PoseCorrectionPanel
@@ -107,11 +107,18 @@ export default function PoseCorrectionPanel({ feedbacks = [], formScore = 0, isA
                     transition={{ duration: 0.2, delay: i * 0.05 }}
                     style={{ padding: '10px 12px', borderRadius: '10px', background: bg, border: `1px solid ${border}` }}
                   >
-                    <div style={{ fontSize: '13px', color: textColor, fontWeight: 600, lineHeight: 1.5 }}>
-                      {fb.cue}
-                    </div>
-                    <div style={{ fontSize: '11px', color: '#4b5563', marginTop: '3px' }}>
-                      {fb.joint} · {fb.angle}°
+                    <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
+                      <div style={{ marginTop: '2px' }}>
+                        {fb.status === 'GOOD' ? <CheckCircle size={14} color="#22c55e" /> : fb.status === 'WARN' ? <AlertTriangle size={14} color="#f59e0b" /> : <XCircle size={14} color="#ef4444" />}
+                      </div>
+                      <div>
+                        <div style={{ fontSize: '13px', color: textColor, fontWeight: 600, lineHeight: 1.5 }}>
+                          {fb.cue.replace(/[✅⚠️❌]/g, '').trim()}
+                        </div>
+                        <div style={{ fontSize: '11px', color: '#4b5563', marginTop: '3px' }}>
+                          {fb.joint} · {fb.angle}°
+                        </div>
+                      </div>
                     </div>
                   </motion.div>
                 )

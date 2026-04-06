@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Play, Square, RotateCcw, CheckCircle, AlertCircle, Wifi, WifiOff,
-  Lightbulb, Video, X, TrendingUp, Award
+  Lightbulb, Video, X, TrendingUp, Award, ArrowUpFromLine, ArrowDownUp, BicepsFlexed, ArrowUpSquare, Minus, Weight, MoveDiagonal, ArrowUpCircle
 } from 'lucide-react'
 import Navbar from '../components/layout/Navbar'
 import CameraFeed from '../components/workout/CameraFeed'
@@ -13,6 +13,8 @@ import PoseCorrectionPanel from '../components/workout/PoseCorrectionPanel'
 import { useAuth } from '../context/AuthContext'
 import { createSession, saveMetrics, completeSession } from '../services/workoutService'
 import { EXERCISES } from '../lib/exerciseVideos'
+
+const IconMap = { ArrowUpFromLine, ArrowDownUp, BicepsFlexed, ArrowUpSquare, Minus, Weight, MoveDiagonal, ArrowUpCircle }
 
 const WS_URL = import.meta.env.VITE_WS_URL || 'ws://localhost:8000'
 const FPS = 12
@@ -290,7 +292,13 @@ export default function WorkoutPage() {
           <motion.div onClick={() => setShowTutorial(false)} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(8px)', zIndex: 300, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }}>
             <motion.div onClick={e => e.stopPropagation()} initial={{ opacity: 0, scale: 0.94 }} animate={{ opacity: 1, scale: 1 }} style={{ background: '#111318', border: '1px solid rgba(42,45,62,0.8)', borderRadius: '24px', width: '100%', maxWidth: '680px', maxHeight: '85vh', overflow: 'auto' }}>
               <div style={{ padding: '24px 28px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <div style={{ fontSize: '20px', fontWeight: 800, color: '#f3f4f6' }}>{exerciseTutorial.emoji} {exerciseTutorial.name} Tutorial</div>
+                <div style={{ fontSize: '20px', fontWeight: 800, color: '#f3f4f6', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  {(() => {
+                    const IconComponent = exerciseTutorial.iconName ? IconMap[exerciseTutorial.iconName] : null;
+                    return IconComponent ? <IconComponent size={24} color="#a855f7" /> : null;
+                  })()}
+                  {exerciseTutorial.name} Tutorial
+                </div>
                 <button onClick={() => setShowTutorial(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#6b7280' }}><X size={20} /></button>
               </div>
               <div style={{ padding: '20px 28px 28px' }}>
@@ -414,7 +422,7 @@ export default function WorkoutPage() {
                 <li>Ensure good lighting on your body</li>
                 <li>Keep your full body in frame</li>
                 <li>Camera should be at a side angle</li>
-                <li>Skeleton overlay shows green ✅ / yellow ⚠️ / red ❌ joints</li>
+                <li>Skeleton overlay shows Green (Good) / Yellow (Warning) / Red (Bad) joints</li>
               </ul>
             </div>
           </div>

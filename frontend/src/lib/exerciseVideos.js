@@ -8,7 +8,7 @@ export const EXERCISES = [
   {
     id: 'pushup',
     name: 'Push-Up',
-    emoji: '💪',
+    iconName: 'ArrowUpFromLine',
     muscleGroups: ['Chest', 'Triceps', 'Shoulders', 'Core'],
     difficulty: 'Beginner',
     equipment: ['None'],
@@ -29,7 +29,7 @@ export const EXERCISES = [
   {
     id: 'squat',
     name: 'Squat',
-    emoji: '🏋️',
+    iconName: 'ArrowDownUp',
     muscleGroups: ['Quads', 'Hamstrings', 'Glutes', 'Core'],
     difficulty: 'Beginner',
     equipment: ['None', 'Barbell'],
@@ -50,7 +50,7 @@ export const EXERCISES = [
   {
     id: 'bicep-curl',
     name: 'Bicep Curl',
-    emoji: '💪',
+    iconName: 'BicepsFlexed',
     muscleGroups: ['Biceps', 'Forearms'],
     difficulty: 'Beginner',
     equipment: ['Dumbbells', 'Resistance Bands', 'Barbell'],
@@ -71,7 +71,7 @@ export const EXERCISES = [
   {
     id: 'pullup',
     name: 'Pull-Up',
-    emoji: '🏋️',
+    iconName: 'ArrowUpSquare',
     muscleGroups: ['Lats', 'Biceps', 'Rear Deltoids', 'Core'],
     difficulty: 'Intermediate',
     equipment: ['Pull-up Bar'],
@@ -92,7 +92,7 @@ export const EXERCISES = [
   {
     id: 'plank',
     name: 'Plank',
-    emoji: '🧘',
+    iconName: 'Minus',
     muscleGroups: ['Core', 'Shoulders', 'Glutes'],
     difficulty: 'Beginner',
     equipment: ['None'],
@@ -113,7 +113,7 @@ export const EXERCISES = [
   {
     id: 'deadlift',
     name: 'Deadlift',
-    emoji: '⚡',
+    iconName: 'Weight',
     muscleGroups: ['Hamstrings', 'Glutes', 'Lower Back', 'Traps'],
     difficulty: 'Intermediate',
     equipment: ['Barbell', 'Dumbbells'],
@@ -134,7 +134,7 @@ export const EXERCISES = [
   {
     id: 'lunges',
     name: 'Lunges',
-    emoji: '🦵',
+    iconName: 'MoveDiagonal',
     muscleGroups: ['Quads', 'Glutes', 'Hamstrings', 'Balance'],
     difficulty: 'Beginner',
     equipment: ['None', 'Dumbbells'],
@@ -155,7 +155,7 @@ export const EXERCISES = [
   {
     id: 'shoulder-press',
     name: 'Shoulder Press',
-    emoji: '🏋️',
+    iconName: 'ArrowUpCircle',
     muscleGroups: ['Shoulders', 'Triceps', 'Upper Chest'],
     difficulty: 'Intermediate',
     equipment: ['Dumbbells', 'Barbell'],

@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Search, X, Play, ChevronRight, CheckCircle, AlertTriangle } from 'lucide-react'
+import { Search, X, Play, ChevronRight, CheckCircle, AlertTriangle, ArrowUpFromLine, ArrowDownUp, BicepsFlexed, ArrowUpSquare, Minus, Weight, MoveDiagonal, ArrowUpCircle } from 'lucide-react'
 import Navbar from '../components/layout/Navbar'
 import { EXERCISES, DIFFICULTY_COLORS, MUSCLE_GROUP_OPTIONS, EQUIPMENT_OPTIONS } from '../lib/exerciseVideos'
+
+const IconMap = { ArrowUpFromLine, ArrowDownUp, BicepsFlexed, ArrowUpSquare, Minus, Weight, MoveDiagonal, ArrowUpCircle }
 
 function VideoModal({ exercise, onClose }) {
   const [tab, setTab] = useState('video')
@@ -27,7 +29,13 @@ function VideoModal({ exercise, onClose }) {
           {/* Header */}
           <div style={{ padding: '24px 28px 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div>
-              <div style={{ fontSize: '22px', fontWeight: 800, color: '#f3f4f6' }}>{exercise.emoji} {exercise.name}</div>
+              <div style={{ fontSize: '22px', fontWeight: 800, color: '#f3f4f6', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                {(() => {
+                  const IconComponent = exercise.iconName ? IconMap[exercise.iconName] : null;
+                  return IconComponent ? <IconComponent size={24} color="#a855f7" /> : null;
+                })()}
+                {exercise.name}
+              </div>
               <div style={{ display: 'flex', gap: '8px', marginTop: '8px', flexWrap: 'wrap' }}>
                 <span style={{ fontSize: '11px', fontWeight: 700, padding: '3px 10px', borderRadius: '20px', background: `${DIFFICULTY_COLORS[exercise.difficulty]}18`, color: DIFFICULTY_COLORS[exercise.difficulty], border: `1px solid ${DIFFICULTY_COLORS[exercise.difficulty]}35` }}>
                   {exercise.difficulty}
@@ -104,7 +112,12 @@ function ExerciseCard({ exercise, onOpen }) {
       onClick={() => onOpen(exercise)}
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '14px' }}>
-        <span style={{ fontSize: '32px' }}>{exercise.emoji}</span>
+        <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(124,58,237,0.1)', color: '#a855f7' }}>
+          {(() => {
+             const IconComponent = exercise.iconName ? IconMap[exercise.iconName] : null;
+             return IconComponent ? <IconComponent size={20} /> : null;
+          })()}
+        </span>
         <span style={{ fontSize: '11px', fontWeight: 700, padding: '4px 10px', borderRadius: '20px', background: `${DIFFICULTY_COLORS[exercise.difficulty]}15`, color: DIFFICULTY_COLORS[exercise.difficulty], border: `1px solid ${DIFFICULTY_COLORS[exercise.difficulty]}30` }}>
           {exercise.difficulty}
         </span>
@@ -174,10 +187,10 @@ export default function VideoLibraryPage() {
             )}
           </div>
           <select className="input-field" value={muscleFilter} onChange={e => setMuscleFilter(e.target.value)} style={{ width: 'auto', cursor: 'pointer', appearance: 'auto' }}>
-            {MUSCLE_GROUP_OPTIONS.map(o => <option key={o} value={o}>{o === 'All' ? '💪 Muscle Group' : o}</option>)}
+            {MUSCLE_GROUP_OPTIONS.map(o => <option key={o} value={o}>{o === 'All' ? 'Muscle Group' : o}</option>)}
           </select>
           <select className="input-field" value={equipFilter} onChange={e => setEquipFilter(e.target.value)} style={{ width: 'auto', cursor: 'pointer', appearance: 'auto' }}>
-            {EQUIPMENT_OPTIONS.map(o => <option key={o} value={o}>{o === 'All' ? '🏋️ Equipment' : o}</option>)}
+            {EQUIPMENT_OPTIONS.map(o => <option key={o} value={o}>{o === 'All' ? 'Equipment' : o}</option>)}
           </select>
         </div>
 
@@ -189,7 +202,7 @@ export default function VideoLibraryPage() {
         {/* Grid */}
         {filtered.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '60px 24px', background: 'rgba(17,19,24,0.6)', border: '1px dashed rgba(42,45,62,0.6)', borderRadius: '16px' }}>
-            <div style={{ fontSize: '40px', marginBottom: '16px' }}>🔍</div>
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '16px' }}><Search size={40} color="#a855f7" /></div>
             <p style={{ color: '#6b7280', fontSize: '15px', margin: 0 }}>No exercises match your filters.</p>
           </div>
         ) : (
