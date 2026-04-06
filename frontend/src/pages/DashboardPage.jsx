@@ -46,6 +46,21 @@ function StatCard({ icon: Icon, label, value, sub, color, delay }) {
   )
 }
 
+function SkeletonRow() {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 0' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+        <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(42,45,62,0.4)', animation: 'shimmer 1.5s infinite linear', backgroundImage: 'linear-gradient(90deg,transparent 0%,rgba(255,255,255,0.04) 50%,transparent 100%)', backgroundSize: '200% 100%' }} />
+        <div>
+          <div style={{ height: '14px', width: '120px', borderRadius: '6px', background: 'rgba(42,45,62,0.4)', marginBottom: '8px', animation: 'shimmer 1.5s infinite linear', backgroundImage: 'linear-gradient(90deg,transparent 0%,rgba(255,255,255,0.04) 50%,transparent 100%)', backgroundSize: '200% 100%' }} />
+          <div style={{ height: '12px', width: '80px', borderRadius: '6px', background: 'rgba(42,45,62,0.3)', animation: 'shimmer 1.5s infinite linear', backgroundImage: 'linear-gradient(90deg,transparent 0%,rgba(255,255,255,0.04) 50%,transparent 100%)', backgroundSize: '200% 100%' }} />
+        </div>
+      </div>
+      <div style={{ height: '24px', width: '80px', borderRadius: '6px', background: 'rgba(42,45,62,0.4)', animation: 'shimmer 1.5s infinite linear', backgroundImage: 'linear-gradient(90deg,transparent 0%,rgba(255,255,255,0.04) 50%,transparent 100%)', backgroundSize: '200% 100%' }} />
+    </div>
+  )
+}
+
 export default function DashboardPage() {
   const { user } = useAuth()
   const [sessions, setSessions] = useState([])
@@ -253,8 +268,8 @@ export default function DashboardPage() {
             </div>
 
             {loading ? (
-              <div style={{ display: 'flex', justifyContent: 'center', padding: '40px 0' }}>
-                <div style={{ width: '32px', height: '32px', border: '3px solid rgba(124,58,237,0.2)', borderTop: '3px solid #7c3aed', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <SkeletonRow /><SkeletonRow /><SkeletonRow />
               </div>
             ) : recentSessions.length === 0 ? (
               <div
@@ -346,7 +361,10 @@ export default function DashboardPage() {
         </motion.div>
       </main>
 
-      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+      <style>{`
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes shimmer { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
+      `}</style>
     </div>
   )
 }

@@ -94,9 +94,14 @@ export default function Navbar() {
                   background: 'linear-gradient(135deg, #7c3aed, #a855f7)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   fontSize: '12px', fontWeight: 700, color: 'white', flexShrink: 0,
+                  overflow: 'hidden'
                 }}
               >
-                {(user.name || user.email)?.[0]?.toUpperCase()}
+                {user.profilePicture ? (
+                  <img src={user.profilePicture} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                ) : (
+                  (user.name || user.email)?.[0]?.toUpperCase()
+                )}
               </div>
               <span style={{ fontSize: '13px', color: '#d1d5db', whiteSpace: 'nowrap' }}>
                 Hey, <span style={{ fontWeight: 700, color: '#f3f4f6' }}>{firstName}</span>

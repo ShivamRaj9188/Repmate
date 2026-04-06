@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import {
   User, Target, Activity, Salad, Dumbbell, Calendar, Edit3,
-  CheckCircle, Flame, Award, Loader2, Save, X
+  CheckCircle, Flame, Award, Loader2, Save, X, Camera
 } from 'lucide-react'
 import Navbar from '../components/layout/Navbar'
 import { useAuth } from '../context/AuthContext'
@@ -32,7 +32,7 @@ function InfoRow({ label, value, icon: Icon, color = '#7c3aed' }) {
 }
 
 export default function ProfilePage() {
-  const { user } = useAuth()
+  const { user, updateUser } = useAuth()
   const [profile, setProfile] = useState(null)
   const [streak, setStreak] = useState({ currentStreak: 0, longestStreak: 0, milestoneBadge: '' })
   const [loading, setLoading] = useState(true)
@@ -58,9 +58,51 @@ export default function ProfilePage() {
         dietPreference: profileData.dietPreference || '',
         equipmentAccess: profileData.equipmentAccess || '',
         workoutDaysPerWeek: profileData.workoutDaysPerWeek || '',
+        profilePicture: profileData.profilePicture || '',
       })
+      if (profileData && updateUser) {
+        updateUser({ 
+          name: profileData.name || user?.name, 
+          profilePicture: profileData.profilePicture || user?.profilePicture 
+        })
+      }
     }).finally(() => setLoading(false))
   }, [])
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0]
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = (event) => {
+      const img = new Image()
+      img.onload = () => {
+        const canvas = document.createElement('canvas')
+        const MAX_WIDTH = 400
+        const MAX_HEIGHT = 400
+        let width = img.width
+        let height = img.height
+        if (width > height) {
+          if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
+        } else {
+          if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
+        }
+        canvas.width = width
+        canvas.height = height
+        const ctx = canvas.getContext('2d')
+        ctx.drawImage(img, 0, 0, width, height)
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.8)
+        setForm(f => ({ ...f, profilePicture: dataUrl }))
+        updateProfile({ profilePicture: dataUrl })
+          .then(updated => {
+            setProfile(updated)
+            if (updateUser) updateUser({ profilePicture: dataUrl })
+          })
+          .catch(console.error)
+      }
+      img.src = event.target.result
+    }
+    reader.readAsDataURL(file)
+  }
 
   const handleSave = async () => {
     setSaving(true)
@@ -76,8 +118,15 @@ export default function ProfilePage() {
         dietPreference: form.dietPreference || null,
         equipmentAccess: form.equipmentAccess || null,
         workoutDaysPerWeek: parseInt(form.workoutDaysPerWeek) || null,
+        profilePicture: form.profilePicture || null,
       })
       setProfile(updated)
+      if (updateUser) {
+        updateUser({ 
+          name: updated.name, 
+          profilePicture: updated.profilePicture 
+        })
+      }
       setEditing(false)
     } catch {
       /* silently fail */
@@ -106,13 +155,38 @@ export default function ProfilePage() {
             <motion.div variants={fadeUp} custom={1}>
               {/* Avatar + name card */}
               <div style={{ background: 'rgba(17,19,24,0.9)', border: '1px solid rgba(42,45,62,0.7)', borderRadius: '20px', padding: '32px', textAlign: 'center', marginBottom: '16px' }}>
-                {/* Avatar */}
-                <div style={{ width: '88px', height: '88px', borderRadius: '50%', background: 'linear-gradient(135deg,#7c3aed,#a855f7)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px', fontSize: '32px', fontWeight: 900, color: 'white', boxShadow: '0 0 40px rgba(124,58,237,0.4)' }}>
-                  {user?.name?.[0]?.toUpperCase() || '?'}
+                <div style={{ position: 'relative', width: '88px', height: '88px', margin: '0 auto 16px' }}>
+                  <div style={{ width: '88px', height: '88px', borderRadius: '50%', background: 'linear-gradient(135deg,#7c3aed,#a855f7)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '32px', fontWeight: 900, color: 'white', boxShadow: '0 0 40px rgba(124,58,237,0.4)', overflow: 'hidden' }}>
+                    {
+                      (form.profilePicture || profile?.profilePicture) ? (
+                        <img src={form.profilePicture || profile?.profilePicture} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      ) : (
+                        (form.name?.[0]?.toUpperCase() || (user?.name || user?.email)?.[0]?.toUpperCase()) || '?'
+                      )
+                    }
+                  </div>
+                  <label style={{ position: 'absolute', bottom: 0, right: '-4px', width: '28px', height: '28px', borderRadius: '50%', background: '#2a2d3e', border: '2px solid rgba(17,19,24,0.9)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#f3f4f6', transition: 'transform 0.2s ease', ':hover': { transform: 'scale(1.1)' } }}>
+                    <Camera size={14} />
+                    <input type="file" accept="image/png, image/jpeg, image/webp" style={{ display: 'none' }} onChange={handleImageUpload} />
+                  </label>
                 </div>
-                <div style={{ fontSize: '22px', fontWeight: 800, color: '#f3f4f6', marginBottom: '4px' }}>
-                  {user?.name || 'Athlete'}
-                </div>
+                {editing ? (
+                  <input
+                    className="input-field"
+                    style={{ textAlign: 'center', fontSize: '18px', fontWeight: 800, padding: '8px', marginBottom: '8px' }}
+                    value={form.name || ''}
+                    onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                    placeholder="Your Name"
+                    minLength={2}
+                    maxLength={50}
+                    pattern="^[A-Za-z\s.'-]+$"
+                    title="Only letters, spaces, hyphens, dots, and apostrophes allowed."
+                  />
+                ) : (
+                  <div style={{ fontSize: '22px', fontWeight: 800, color: '#f3f4f6', marginBottom: '4px' }}>
+                    {profile?.name || user?.name || 'Athlete'}
+                  </div>
+                )}
                 <div style={{ fontSize: '14px', color: '#6b7280', marginBottom: '16px' }}>{user?.email}</div>
 
                 {/* Goal badge */}
@@ -167,7 +241,7 @@ export default function ProfilePage() {
                       onClick={() => setEditing(true)}
                       style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '8px 14px', borderRadius: '8px', background: 'rgba(124,58,237,0.1)', border: '1px solid rgba(124,58,237,0.3)', color: '#a855f7', cursor: 'pointer', fontSize: '13px', fontWeight: 600 }}
                     >
-                      <Edit3 size={13} /> Edit
+                      <Edit3 size={13} /> Edit Profile
                     </button>
                   ) : (
                     <div style={{ display: 'flex', gap: '8px' }}>
@@ -183,21 +257,32 @@ export default function ProfilePage() {
                 </div>
 
                 {loading ? (
-                  <div style={{ display: 'flex', justifyContent: 'center', padding: '40px 0' }}>
-                    <div style={{ width: '28px', height: '28px', border: '3px solid rgba(124,58,237,0.2)', borderTop: '3px solid #7c3aed', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    {[1, 2, 3, 4, 5, 6, 7].map(i => (
+                      <div key={i} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 0', borderBottom: '1px solid rgba(42,45,62,0.4)' }}>
+                        <div style={{ height: '16px', width: '120px', borderRadius: '4px', background: 'rgba(42,45,62,0.4)', animation: 'shimmer 1.5s infinite linear', backgroundImage: 'linear-gradient(90deg,transparent 0%,rgba(255,255,255,0.04) 50%,transparent 100%)', backgroundSize: '200% 100%' }} />
+                        <div style={{ height: '16px', width: '80px', borderRadius: '4px', background: 'rgba(42,45,62,0.3)', animation: 'shimmer 1.5s infinite linear', backgroundImage: 'linear-gradient(90deg,transparent 0%,rgba(255,255,255,0.04) 50%,transparent 100%)', backgroundSize: '200% 100%' }} />
+                      </div>
+                    ))}
                   </div>
                 ) : editing ? (
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
                     {[
-                      { key: 'name', label: 'Name', type: 'text' },
-                      { key: 'age', label: 'Age', type: 'number', suffix: 'yrs' },
-                      { key: 'heightCm', label: 'Height (cm)', type: 'number', suffix: 'cm' },
-                      { key: 'weightKg', label: 'Weight (kg)', type: 'number', suffix: 'kg' },
-                      { key: 'workoutDaysPerWeek', label: 'Workout Days/Week', type: 'number' },
-                    ].map(({ key, label, type, suffix }) => (
+                      { key: 'age', label: 'Age', type: 'number', suffix: 'yrs', min: 13, max: 120 },
+                      { key: 'heightCm', label: 'Height (cm)', type: 'number', suffix: 'cm', min: 50, max: 300 },
+                      { key: 'weightKg', label: 'Weight (kg)', type: 'number', suffix: 'kg', min: 20, max: 500 },
+                      { key: 'workoutDaysPerWeek', label: 'Workout Days/Week', type: 'number', min: 1, max: 7 },
+                    ].map(({ key, label, type, suffix, min, max }) => (
                       <div key={key}>
                         <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#6b7280', marginBottom: '6px' }}>{label.toUpperCase()}</label>
-                        <input type={type} className="input-field" value={form[key]} onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))} />
+                        <input
+                          type={type}
+                          className="input-field"
+                          value={form[key] || ''}
+                          onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
+                          min={min}
+                          max={max}
+                        />
                       </div>
                     ))}
                     {[
@@ -250,7 +335,10 @@ export default function ProfilePage() {
           </div>
         </motion.div>
       </main>
-      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+      <style>{`
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes shimmer { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
+      `}</style>
     </div>
   )
 }

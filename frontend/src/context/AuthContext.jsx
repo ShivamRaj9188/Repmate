@@ -30,6 +30,15 @@ export function AuthProvider({ children }) {
     localStorage.setItem('repmate_user', JSON.stringify(userData))
   }
 
+  const updateUser = (newData) => {
+    setUser((prev) => {
+      if (!prev) return prev
+      const updated = { ...prev, ...newData }
+      localStorage.setItem('repmate_user', JSON.stringify(updated))
+      return updated
+    })
+  }
+
   const logout = () => {
     setToken(null)
     setUser(null)
@@ -44,6 +53,7 @@ export function AuthProvider({ children }) {
         token,
         login,
         logout,
+        updateUser,
         loading,
         isAuthenticated: !!token,
       }}
