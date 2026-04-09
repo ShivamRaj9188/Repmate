@@ -15,7 +15,7 @@ RepMate is built with **absolute privacy** as a core principle.
 
 ---
 
-## 🧠 Advanced ML Form Classification Pipeline
+## Advanced ML Form Classification Pipeline
 
 RepMate's core strength lies in its dual-engine AI tracking module, which combines algorithmic heuristics with a robust Machine Learning classification system.
 
