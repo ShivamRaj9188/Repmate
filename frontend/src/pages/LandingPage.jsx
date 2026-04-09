@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Dumbbell, Brain, ShieldCheck, TrendingUp, Zap, ArrowRight, Play, Salad, Flame, PlayCircle } from 'lucide-react'
+import { Dumbbell, Brain, ShieldCheck, TrendingUp, Zap, ArrowRight, Play, Salad, Flame, PlayCircle, Lock } from 'lucide-react'
 
 const features = [
   {
@@ -37,6 +37,13 @@ const features = [
     desc: 'Access a curated collection of workout routines and tutorials seamlessly from your dashboard.',
     color: '#3b82f6',
     glow: 'rgba(59,130,246,0.2)',
+  },
+  {
+    icon: Lock,
+    title: '100% Privacy Guarantee',
+    desc: 'Your camera feed is never recorded, saved, or uploaded. Everything is processed ephemerally on the edge.',
+    color: '#ec4899',
+    glow: 'rgba(236,72,153,0.2)',
   },
 ]
 
