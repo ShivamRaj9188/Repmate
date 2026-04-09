@@ -40,6 +40,8 @@ export default function WorkoutPage() {
   // Section 3: Pose correction state
   const [formFeedbacks, setFormFeedbacks] = useState([])
   const [formScore, setFormScore] = useState(0)
+  const [mlFormCorrect, setMlFormCorrect] = useState(true)
+  const [mlScore, setMlScore] = useState(100)
   const [setHistory, setSetHistory] = useState([])     // [{score, repCount, exercise}]
   const [showSetSummary, setShowSetSummary] = useState(false)
   const [lastSetData, setLastSetData] = useState(null)
@@ -59,6 +61,7 @@ export default function WorkoutPage() {
   const totalPostureRef = useRef(0)
   const formScoreRef = useRef(0)
   const formScoreHistoryRef = useRef([])
+  const mlScoreHistoryRef = useRef([])
 
   const showToast = useCallback((msg, type = 'info') => {
     setToast({ msg, type })
@@ -89,10 +92,11 @@ export default function WorkoutPage() {
   const startWorkout = async () => {
     setRepCount(0); setStage(null); setPosture(null); setSpeed(0)
     setGoodPostureCount(0); setTotalPostureFrames(0); setAiFrameReceived(false)
-    setFormFeedbacks([]); setFormScore(0)
+    setFormFeedbacks([]); setFormScore(0); setMlFormCorrect(true); setMlScore(100)
     repCountRef.current = 0; speedRef.current = 0
     goodPostureRef.current = 0; totalPostureRef.current = 0
     formScoreHistoryRef.current = []
+    mlScoreHistoryRef.current = []
 
     let sid = null
     try {
@@ -138,6 +142,11 @@ export default function WorkoutPage() {
           setFormScore(data.form_score)
           if (data.form_score > 0) formScoreHistoryRef.current.push(data.form_score)
         }
+        if (data.ml_form_correct !== undefined) setMlFormCorrect(data.ml_form_correct)
+        if (data.ml_score !== undefined) {
+          setMlScore(data.ml_score)
+          if (data.ml_score > 0) mlScoreHistoryRef.current.push(data.ml_score)
+        }
       } catch { /* ignore */ }
     }
 
@@ -180,7 +189,7 @@ export default function WorkoutPage() {
     const finalSpeed  = speedRef.current
     const finalGood   = goodPostureRef.current
     const finalTotal  = totalPostureRef.current
-    const scores      = formScoreHistoryRef.current
+    const scores      = mlScoreHistoryRef.current.length > 0 ? mlScoreHistoryRef.current : formScoreHistoryRef.current
     const avgFormScore = scores.length > 0 ? scores.reduce((a, b) => a + b, 0) / scores.length : 0
 
     // Build post-set summary
@@ -212,7 +221,7 @@ export default function WorkoutPage() {
     }
   }
 
-  const reset = () => { setRepCount(0); setStage(null); setPosture(null); setSpeed(0); setFormFeedbacks([]); setFormScore(0) }
+  const reset = () => { setRepCount(0); setStage(null); setPosture(null); setSpeed(0); setFormFeedbacks([]); setFormScore(0); setMlScore(100); setMlFormCorrect(true); }
 
   useEffect(() => {
     return () => {
@@ -335,7 +344,7 @@ export default function WorkoutPage() {
               <CameraFeed ref={cameraRef} isActive={isRunning} displayCanvasRef={displayCanvasRef} />
               {isRunning && (
                 <div style={{ position: 'absolute', inset: 0 }}>
-                  <RepHUD repCount={repCount} stage={stage} posture={posture} speed={speed} isActive={isRunning} />
+                  <RepHUD repCount={repCount} stage={stage} posture={posture} speed={speed} isActive={isRunning} mlFormCorrect={mlFormCorrect} mlScore={mlScore} />
                 </div>
               )}
               {isRunning && (
@@ -379,9 +388,9 @@ export default function WorkoutPage() {
                 <div style={{ color: '#6b7280', fontSize: '11px', fontWeight: 600, letterSpacing: '1px', marginBottom: '5px' }}>SPEED</div>
                 <div style={{ fontSize: '20px', fontWeight: 800, color: speed > 0 ? '#a855f7' : '#2a2d3e' }}>{speed > 0 ? `${speed}s` : '—'}</div>
               </div>
-              <div style={{ background: 'rgba(17,19,24,0.9)', border: `1px solid ${posture === 'GOOD' ? 'rgba(34,197,94,0.35)' : posture ? 'rgba(239,68,68,0.35)' : 'rgba(42,45,62,0.6)'}`, borderRadius: '12px', padding: '14px', textAlign: 'center' }}>
+              <div style={{ background: 'rgba(17,19,24,0.9)', border: `1px solid ${(posture === 'LOW CONFIDENCE' || posture === 'TRACKING LOST') ? 'rgba(245,158,11,0.35)' : (mlFormCorrect ? 'rgba(34,197,94,0.35)' : 'rgba(239,68,68,0.35)')}`, borderRadius: '12px', padding: '14px', textAlign: 'center' }}>
                 <div style={{ color: '#6b7280', fontSize: '11px', fontWeight: 600, letterSpacing: '1px', marginBottom: '5px' }}>FORM</div>
-                <div style={{ fontSize: '13px', fontWeight: 800, color: posture === 'GOOD' ? '#22c55e' : posture ? '#ef4444' : '#2a2d3e' }}>{posture || '—'}</div>
+                <div style={{ fontSize: '12px', fontWeight: 800, color: (posture === 'LOW CONFIDENCE' || posture === 'TRACKING LOST') ? '#f59e0b' : (mlFormCorrect ? '#22c55e' : '#ef4444') }}>{(posture === 'LOW CONFIDENCE' || posture === 'TRACKING LOST') ? posture : (mlFormCorrect ? 'GOOD' : 'FIX')}</div>
               </div>
             </div>
 

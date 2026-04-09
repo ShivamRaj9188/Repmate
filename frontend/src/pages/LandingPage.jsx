@@ -12,8 +12,8 @@ const features = [
   },
   {
     icon: ShieldCheck,
-    title: 'Posture Analysis',
-    desc: 'Instant feedback on your form. The AI flags bad posture before it becomes injury — every single rep.',
+    title: 'ML Form Classification',
+    desc: 'Advanced Random Forest models analyze 5-frame moving windows to probabilistically score your exercise form with sub-millisecond latency.',
     color: '#22c55e',
     glow: 'rgba(34,197,94,0.2)',
   },

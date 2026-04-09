@@ -161,7 +161,7 @@ async def websocket_workout(websocket: WebSocket):
                 continue
 
             # Run pose detection (throttled to 15fps internally)
-            analysis = detector.analyze_frame(img, draw=False, max_fps=15, confidence_threshold=0.7)
+            analysis = detector.analyze_frame(img, draw=False, max_fps=15, confidence_threshold=0.4)
             landmarks = analysis.landmarks
 
             # Defaults
@@ -171,6 +171,8 @@ async def websocket_workout(websocket: WebSocket):
             stage = rep_counter.stage if rep_counter else "NEUTRAL"
             form_feedbacks = []
             form_score = 0.0
+            ml_form_correct = True
+            ml_score = 100.0
             connection_colors = {}
 
             if landmarks and analysis.processable:
@@ -204,6 +206,8 @@ async def websocket_workout(websocket: WebSocket):
                     for fb in form_result.feedbacks
                 ]
                 form_score = form_result.form_score
+                ml_form_correct = form_result.ml_form_correct
+                ml_score = form_result.ml_score
 
                 # Track most common mistakes for post-set summary
                 for fb in form_result.feedbacks:
@@ -239,6 +243,8 @@ async def websocket_workout(websocket: WebSocket):
                 # New form correction fields
                 "form_feedback": form_feedbacks,
                 "form_score": form_score,
+                "ml_form_correct": ml_form_correct,
+                "ml_score": ml_score,
             })
 
     except WebSocketDisconnect:

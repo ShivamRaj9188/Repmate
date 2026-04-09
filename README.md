@@ -19,7 +19,7 @@ RepMate is built with **absolute privacy** as a core principle.
 
 - **Real-Time AI Tracking:** Utilizing Google's MediaPipe architecture for low-latency, hyper-accurate pose estimating over WebSockets.
 - **Exponential Moving Average (EMA) Integration:** Tracks joint angles using mathematical smoothing to eliminate jitter, false-positives, and camera glitches.
-- **Posture Analysis:** Instant feedback on body alignment to prevent injury and enforce biological movement curves.
+- **ML Form Classification:** Advanced Random Forest machine learning models analyze 5-frame moving windows to probabilistically score your exercise form with sub-millisecond latency.
 - **Personalized Diet Generation:** Automatically constructs custom 7-day meal plans based on individual body metrics, goals, and dietary preferences.
 - **Curated Video Library:** Built-in access to high-quality workout tutorials and routines seamlessly integrated into the application dashboard.
 - **Multi-Exercise Support:** Currently supports Push-Ups, Squats, Bicep Curls, and Pull-Ups with dynamic logic mapping.
@@ -44,6 +44,7 @@ RepMate is built with **absolute privacy** as a core principle.
 ### AI Processing Engine
 - **Python 3.11 & FastAPI**: Asynchronous framework handling concurrent high-throughput WebRTC/WebSocket streams.
 - **MediaPipe Pose**: High-fidelity holistic skeletal detection.
+- **Scikit-Learn**: Employs Random Forest models mapping multi-frame velocities, angles, and variances to reliably classify user trajectory.
 - **NumPy EMA Filtering**: Vector-based mathematical geometry calculations with applied moving average filters.
 
 ---

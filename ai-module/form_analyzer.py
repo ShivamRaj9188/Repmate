@@ -5,14 +5,16 @@ Each exercise has a set of rules. Each rule checks one joint angle and
 returns: status ("GOOD" | "WARN" | "BAD"), a coaching cue string, and the
 joint name (used to colour the skeleton overlay).
 
-Rules are checked only when the rep is in the relevant phase (e.g. knee
-angle at the bottom of a squat), so noisy top-of-movement frames don't
-produce false warnings.
+In addition, it runs a Random Forest ML model on a 5-frame temporal window
+to provide an overarching `ml_form_correct` and `ml_score` (probabilistic).
 """
 
 from dataclasses import dataclass
 from typing import Optional
+from collections import deque
 import numpy as np
+import joblib
+import os
 
 
 @dataclass
@@ -26,8 +28,10 @@ class JointFeedback:
 @dataclass
 class FormAnalysis:
     feedbacks: list     # list[JointFeedback]
-    form_score: float   # 0-100, average greenness this frame
+    form_score: float   # 0-100, average greenness this frame (heuristic)
     stage: str          # current movement stage
+    ml_form_correct: bool
+    ml_score: float     # 0-100%
 
 
 def _angle(a, b, c) -> float:
@@ -38,33 +42,22 @@ def _angle(a, b, c) -> float:
     return 360 - angle if angle > 180 else angle
 
 
-# ─── MediaPipe landmark indices (used in app.py) ──────────────────────────
-# 11=left_shoulder, 12=right_shoulder
-# 13=left_elbow, 14=right_elbow
-# 15=left_wrist, 16=right_wrist
-# 23=left_hip, 24=right_hip
-# 25=left_knee, 26=right_knee
-# 27=left_ankle, 28=right_ankle
-# 0=nose
-
 IDEAL_FORM = {
     "PUSHUP": [
-        # Elbow angle: at the bottom should be ~90°
         {
             "id": "elbow",
             "joint_label": "elbow",
-            "phase": "DOWN",          # only check this rule in the DOWN phase
+            "phase": "DOWN",
             "good_min": 70, "good_max": 110,
             "warn_min": 55, "warn_max": 130,
             "cue_good": "✅ Elbow angle — great depth!",
             "cue_warn": "⚠️ Lower a bit more — aim for 90° elbow bend",
             "cue_bad": "⚠️ Don't lock your elbows — keep a slight bend",
         },
-        # Spine alignment: shoulder-hip-ankle should stay straight (~170-180°)
         {
             "id": "spine",
             "joint_label": "hip",
-            "phase": None,            # check in all phases
+            "phase": None,
             "good_min": 160, "good_max": 195,
             "warn_min": 145, "warn_max": 200,
             "cue_good": "✅ Back is straight — great form!",
@@ -73,7 +66,6 @@ IDEAL_FORM = {
         },
     ],
     "SQUAT": [
-        # Knee angle at bottom: should be ≤ 100° (deep squat)
         {
             "id": "knee",
             "joint_label": "knee",
@@ -84,7 +76,6 @@ IDEAL_FORM = {
             "cue_warn": "⚠️ Lower your hips more for full depth",
             "cue_bad": "⚠️ Go deeper — hip crease should pass the knee",
         },
-        # Hip angle at bottom: hip-knee-ankle line should open smoothly (~90-120°)
         {
             "id": "hip",
             "joint_label": "hip",
@@ -97,7 +88,6 @@ IDEAL_FORM = {
         },
     ],
     "CURL": [
-        # Elbow angle at top: should be fully curled ~40-60°
         {
             "id": "elbow_top",
             "joint_label": "elbow",
@@ -108,7 +98,6 @@ IDEAL_FORM = {
             "cue_warn": "⚠️ Curl a little higher for full contraction",
             "cue_bad": "⚠️ Don't swing — keep elbows pinned to your sides",
         },
-        # Elbow angle at bottom: should be fully extended ~160-180°
         {
             "id": "elbow_bottom",
             "joint_label": "elbow",
@@ -121,7 +110,6 @@ IDEAL_FORM = {
         },
     ],
     "PULLUP": [
-        # Elbow angle at top: fully pulled up should be ~60-85°
         {
             "id": "elbow_top",
             "joint_label": "elbow",
@@ -132,7 +120,6 @@ IDEAL_FORM = {
             "cue_warn": "⚠️ Pull higher — chin should clear the bar",
             "cue_bad": "⚠️ Keep elbows tucked — avoid flaring",
         },
-        # Dead hang at bottom: ~155-175°
         {
             "id": "elbow_bottom",
             "joint_label": "elbow",
@@ -153,21 +140,26 @@ class FormAnalyzer:
     returns structured feedback for each joint.
     """
 
-    # Running history: list of 0/0.5/1 scores (BAD/WARN/GOOD) per frame
     def __init__(self):
         self._score_history: list[float] = []
+        self._ml_score_history: list[float] = []
+        self._window_buffer = deque(maxlen=5)
+        self.models = {}
+        
+        # Load ML models
+        model_path = os.path.join(os.path.dirname(__file__), 'exercise_model.pkl')
+        if os.path.exists(model_path):
+            try:
+                self.models = joblib.load(model_path)
+            except Exception as e:
+                print(f"[AI] Could not load ML model: {e}")
 
     def analyze(self, lm: dict, exercise: str, stage: str) -> FormAnalysis:
-        """
-        lm: dict of {landmark_id: {"x": float, "y": float}}
-        exercise: "PUSHUP" | "SQUAT" | "CURL" | "PULLUP"
-        stage: "NEUTRAL" | "DOWN" | "UP"
-        """
+        # Evaluate heuristic rules
         rules = IDEAL_FORM.get(exercise.upper(), [])
         feedbacks = []
 
         for rule in rules:
-            # Only evaluate rule when in the correct phase (or phase=None = always)
             if rule["phase"] is not None and rule["phase"] != stage:
                 continue
 
@@ -192,29 +184,78 @@ class FormAnalyzer:
                 angle=round(angle, 1),
             ))
 
-        # Score this frame
         frame_score = self._score_frame(feedbacks)
         self._score_history.append(frame_score)
+        
+        # --- ML Prediction ---
+        ml_score_pct = 100.0
+        ml_form_correct = True
+        
+        # Extract 6 global joints for ML
+        g = self._get_point
+        try:
+            l_elbow = _angle(g(lm, 11), g(lm, 13), g(lm, 15)) if g(lm,11) and g(lm,13) and g(lm,15) else 160
+            r_elbow = _angle(g(lm, 12), g(lm, 14), g(lm, 16)) if g(lm,12) and g(lm,14) and g(lm,16) else 160
+            l_hip = _angle(g(lm, 11), g(lm, 23), g(lm, 25)) if g(lm,11) and g(lm,23) and g(lm,25) else 175
+            r_hip = _angle(g(lm, 12), g(lm, 24), g(lm, 26)) if g(lm,12) and g(lm,24) and g(lm,26) else 175
+            l_knee = _angle(g(lm, 23), g(lm, 25), g(lm, 27)) if g(lm,23) and g(lm,25) and g(lm,27) else 170
+            r_knee = _angle(g(lm, 24), g(lm, 26), g(lm, 28)) if g(lm,24) and g(lm,26) and g(lm,28) else 170
+            
+            stage_encoded = {"NEUTRAL": 0, "DOWN": 1, "UP": 2}.get(stage, 0)
+            
+            self._window_buffer.append([l_elbow, r_elbow, l_hip, r_hip, l_knee, r_knee, stage_encoded])
+            
+            if len(self._window_buffer) == 5:
+                # We have enough frames to build features
+                w_np = np.array(self._window_buffer)
+                angles = w_np[:, :6]
+                st = w_np[-1, 6]
+                
+                mean_angles = np.mean(angles, axis=0) # 6
+                velocity = angles[-1] - angles[0] # 6
+                variance = np.var(angles, axis=0) # 6
+                sym_elbow = abs(mean_angles[0] - mean_angles[1])
+                sym_hip = abs(mean_angles[2] - mean_angles[3])
+                sym_knee = abs(mean_angles[4] - mean_angles[5])
+                symmetry = np.array([sym_elbow, sym_hip, sym_knee]) # 3
+                
+                features = np.concatenate([mean_angles, velocity, variance, symmetry, [st]])
+                
+                model = self.models.get(exercise.upper())
+                if model is not None:
+                    probs = model.predict_proba([features])[0]
+                    # Class 1 is "GOOD"
+                    confidence = probs[1]
+                    ml_form_correct = confidence >= 0.5
+                    ml_score_pct = float(confidence * 100.0)
+                    self._ml_score_history.append(ml_score_pct)
+        except Exception as e:
+            # Fallback if any math fails
+            pass
 
         return FormAnalysis(
             feedbacks=feedbacks,
             form_score=round(frame_score * 100, 1),
             stage=stage,
+            ml_form_correct=bool(ml_form_correct),
+            ml_score=round(float(ml_score_pct), 1),
         )
 
     def get_set_score(self) -> float:
-        """Average form score across the whole set (0–100)."""
+        """Average ML score across the whole set (0–100). If no ML, fall back to heuristic."""
+        if self._ml_score_history:
+            return round(sum(self._ml_score_history) / len(self._ml_score_history), 1)
         if not self._score_history:
             return 0.0
         return round(sum(self._score_history) / len(self._score_history) * 100, 1)
 
     def get_most_common_mistake(self) -> Optional[str]:
-        """Returns the most frequently triggered BAD/WARN cue this set."""
-        # Stored as list of (cue, score) per frame — simplified: track externally
-        return None  # extended in app.py via mistake_counter
+        return None
 
     def reset(self):
         self._score_history = []
+        self._ml_score_history = []
+        self._window_buffer.clear()
 
     # ─── Internal helpers ───────────────────────────────────────────────────
 
@@ -238,24 +279,17 @@ class FormAnalyzer:
         return [pt["x"], pt["y"]]
 
     def _compute_angle_for_rule(self, lm: dict, exercise: str, rule_id: str) -> Optional[float]:
-        """Map rule IDs to the correct landmark triplets."""
         g = self._get_point
-
         mappings = {
-            # PUSHUP
-            ("PUSHUP", "elbow"): (g(lm, 11), g(lm, 13), g(lm, 15)),   # shoulder-elbow-wrist
-            ("PUSHUP", "spine"): (g(lm, 11), g(lm, 23), g(lm, 27)),   # shoulder-hip-ankle
-            # SQUAT
-            ("SQUAT", "knee"):   (g(lm, 23), g(lm, 25), g(lm, 27)),   # hip-knee-ankle
-            ("SQUAT", "hip"):    (g(lm, 11), g(lm, 23), g(lm, 25)),   # shoulder-hip-knee
-            # CURL
+            ("PUSHUP", "elbow"): (g(lm, 11), g(lm, 13), g(lm, 15)),
+            ("PUSHUP", "spine"): (g(lm, 11), g(lm, 23), g(lm, 27)),
+            ("SQUAT", "knee"):   (g(lm, 23), g(lm, 25), g(lm, 27)),
+            ("SQUAT", "hip"):    (g(lm, 11), g(lm, 23), g(lm, 25)),
             ("CURL", "elbow_top"):    (g(lm, 11), g(lm, 13), g(lm, 15)),
             ("CURL", "elbow_bottom"): (g(lm, 11), g(lm, 13), g(lm, 15)),
-            # PULLUP
             ("PULLUP", "elbow_top"):    (g(lm, 11), g(lm, 13), g(lm, 15)),
             ("PULLUP", "elbow_bottom"): (g(lm, 11), g(lm, 13), g(lm, 15)),
         }
-
         triplet = mappings.get((exercise.upper(), rule_id))
         if triplet is None or any(p is None for p in triplet):
             return None

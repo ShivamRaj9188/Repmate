@@ -1,8 +1,9 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { Activity, TrendingUp, CheckCircle, AlertTriangle } from 'lucide-react'
 
-export default function RepHUD({ repCount, stage, posture, speed, isActive }) {
-  const isGood = posture === 'GOOD'
+export default function RepHUD({ repCount, stage, posture, speed, isActive, mlFormCorrect, mlScore }) {
+  const isTrackingIssue = posture === 'LOW CONFIDENCE' || posture === 'TRACKING LOST' || posture === 'NO DETECTION'
+  const isGood = isTrackingIssue ? false : (mlFormCorrect !== undefined ? mlFormCorrect : posture === 'GOOD')
 
   return (
     <div
@@ -53,8 +54,8 @@ export default function RepHUD({ repCount, stage, posture, speed, isActive }) {
               letterSpacing: '0.5px',
             }}
           >
-            {isGood ? <CheckCircle size={14} /> : <AlertTriangle size={14} />}
-            {isGood ? 'GOOD FORM' : 'FIX FORM'}
+            {isTrackingIssue ? <AlertTriangle size={14} /> : (isGood ? <CheckCircle size={14} /> : <AlertTriangle size={14} />)}
+            {isTrackingIssue ? posture : (isGood ? 'PROPER FORM' : 'FIX FORM')} {!isTrackingIssue && mlScore !== undefined ? `(${mlScore}%)` : ''}
           </div>
         )}
       </div>
