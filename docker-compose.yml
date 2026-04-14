@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:14-alpine
+    container_name: repmate_postgres
+    environment:
+      POSTGRES_USER: ${DB_USER:-your_db_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-your_db_password}
+      POSTGRES_DB: ${DB_NAME:-repmate_db}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-your_db_user} -d ${DB_NAME:-repmate_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+    container_name: repmate_backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=${DB_NAME:-repmate_db}
+      - DB_USER=${DB_USER:-your_db_user}
+      - DB_PASSWORD=${DB_PASSWORD:-your_db_password}
+      - JWT_SECRET=${JWT_SECRET:-generate-a-strong-random-secret-for-jwt-signing-key-here}
+      - ALLOWED_ORIGIN=${ALLOWED_ORIGIN:-http://localhost:5173}
+      - DB_DDL_AUTO=update
+    ports:
+      - "8080:8080"
+
+  ai-module:
+    build:
+      context: ./ai-module
+    container_name: repmate_ai
+    environment:
+      - ALLOWED_ORIGIN=${ALLOWED_ORIGIN:-http://localhost:5173}
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        - VITE_API_URL=${VITE_API_URL:-http://localhost:8080}
+        - VITE_WS_URL=${VITE_WS_URL:-ws://localhost:8000}
+    container_name: repmate_frontend
+    depends_on:
+      - backend
+      - ai-module
+    ports:
+      - "5173:80"
+
+volumes:
+  postgres_data:
