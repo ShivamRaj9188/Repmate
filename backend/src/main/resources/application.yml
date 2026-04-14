@@ -5,7 +5,7 @@ spring:
     password: ${DB_PASSWORD}
   jpa:
     hibernate:
-      ddl-auto: update # Auto-adds new columns while preserving existing data
+      ddl-auto: ${DB_DDL_AUTO:update} # Parameterized for production usage
     show-sql: true
     properties:
       hibernate:
@@ -13,6 +13,8 @@ spring:
 
 # Security / JWT Keys
 app:
+  cors:
+    allowedOrigins: ${ALLOWED_ORIGIN:http://localhost:5173,http://localhost:3000}
   jwt:
     secret: ${JWT_SECRET}
     expirationMs: 86400000 # 24 Hours
