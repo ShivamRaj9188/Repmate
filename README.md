@@ -22,7 +22,7 @@ RepMate's core strength lies in its dual-engine AI tracking module, which combin
 ### 1. Pose Extraction & Smoothing
 - **MediaPipe Headless Engine:** Extracts 33 skeletal landmarks at up to 30 FPS.
 - **Exponential Moving Average (EMA):** Inter-frame jitter is mathematically smoothed using an alpha filter (0.35 threshold) ensuring joint angle calculations remain highly stable even in low-light conditions.
-- **Debounced State Machine:** Evaluates `NEUTRAL`, `DOWN`, and `UP` movement phases with multi-frame debouncing to eliminate false positive repetition counting.
+- **Debounced State Machine:** Evaluates `NEUTRAL`, `DOWN`, and `UP` movement phases with multi-frame debouncing to eliminate false positive repetition counting
 
 ### 2. The Machine Learning Architecture
 Instead of relying solely on hardcoded angle thresholds, RepMate evaluates human movement probabilistically using a **Random Forest Classifier**:
