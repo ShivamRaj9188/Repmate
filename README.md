@@ -3,15 +3,14 @@
 [![React](https://img.shields.io/badge/React-19-blue.svg)](https://react.dev/)
 [![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.4-green.svg)](https://spring.io/projects/spring-boot)
 [![MediaPipe](https://img.shields.io/badge/AI-MediaPipe-orange.svg)](https://google.github.io/mediapipe/)
-[![Privacy](https://img.shields.io/badge/Privacy-100%25_Local_Processing-purple.svg)]()
 
-RepMate is a cutting-edge fitness tracking application designed to provide real-time feedback on your form and precisely count your repetitions natively in your browser. By leveraging computer vision and advanced Machine Learning pipelines, RepMate acts as your digital personal trainer—no hardware required.
+RepMate is a fitness tracking app that gives real-time feedback on your form and counts your reps using only your webcam. It uses computer vision and a machine learning classifier to act as a digital personal trainer, with no extra hardware.
 
 ## Privacy Guarantee
 
-RepMate is built with **absolute privacy** as a core principle.
-1. **No Video Recording:** Your camera feed is processed ephemerally in local memory and instantly discarded.
-2. **Abstract Storage:** The database securely stores only numerical statistics (e.g., *15 Reps, 92% Accuracy, 2.4s Average Speed*). **No image frames or video streams are ever saved, uploaded, or analyzed outside the active session.**
+RepMate is designed to keep your video private.
+1. **No Video Recording:** Camera frames are sent over a WebSocket to the AI service you run, processed in memory, and discarded.
+2. **Stats Only:** The database stores numbers such as *15 reps, 92% accuracy, 2.4s average speed*. Image frames and video are never saved.
 
 ---
 
@@ -115,5 +114,5 @@ python app.py
 2. **Explore** the personalized Diet Plans and Curated Video Library generated from your health goals.
 3. **Navigate** to the Workout section and select your target exercise.
 4. **Position** your device camera horizontally capturing your full body and hit Start.
-5. **Train.** RepMate's AI natively processes your joints and provides real-time ML-backed form correction.
+5. **Train.** RepMate's AI tracks your joints and provides real-time ML-backed form correction.
 6. **Analyze** your sessions and track your daily streak milestones over time in the Dashboard.

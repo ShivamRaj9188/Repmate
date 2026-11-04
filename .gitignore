@@ -29,3 +29,7 @@ ai-module/.env
 *.iml
 .idea/
 
+
+# Local tool state and logs
+.omx/
+backend_log.txt
