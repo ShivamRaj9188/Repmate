@@ -1,5 +1,7 @@
 package com.repmate.backend.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -18,6 +20,8 @@ import java.util.Map;
  */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     /**
      * Handles @Valid / @Validated constraint violations on @RequestBody DTOs.
@@ -49,11 +53,11 @@ public class GlobalExceptionHandler {
     /**
      * Catch-all for unexpected RuntimeExceptions.
      * OWASP: Never expose exception messages or stack traces to clients.
-     * Log the full exception server-side (the default Spring logger does this).
+     * The full exception is logged server-side only.
      */
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<Map<String, Object>> handleRuntimeException(RuntimeException ex) {
-        // Log internally (Spring logs the stack trace at ERROR level automatically)
+        log.error("Unhandled exception", ex);
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(Map.of(

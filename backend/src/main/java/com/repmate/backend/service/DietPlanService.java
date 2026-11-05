@@ -90,14 +90,15 @@ public class DietPlanService {
 
     // ─── Meal Templates ───────────────────────────────────────────────────────
 
-    private List<Map<String, Object>> buildWeekPlan(int targetCalories, String diet) {
+    List<Map<String, Object>> buildWeekPlan(int targetCalories, String diet) {
         String[] days = {"Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"};
         List<Map<String, Object>> week = new ArrayList<>();
 
-        // Macro splits: protein=30%, carbs=45%, fat=25%
+        // Macro splits: protein=30%, carbs=45%, fat=25% (keto: 30/5/65), same as the meals
+        boolean keto    = "KETO".equals(diet);
         int proteinCals = (int)(targetCalories * 0.30);
-        int carbCals    = (int)(targetCalories * 0.45);
-        int fatCals     = (int)(targetCalories * 0.25);
+        int carbCals    = (int)(targetCalories * (keto ? 0.05 : 0.45));
+        int fatCals     = (int)(targetCalories * (keto ? 0.65 : 0.25));
         int proteinG    = proteinCals / 4;
         int carbG       = carbCals / 4;
         int fatG        = fatCals / 9;
@@ -145,7 +146,7 @@ public class DietPlanService {
     }
 
     private List<List<Map<String, Object>>> nonVegMeals(String meal, int cal) {
-        int p = cal / 4, c = cal / 4, f = cal / 9;
+        int p = (int)(cal * 0.30 / 4), c = (int)(cal * 0.45 / 4), f = (int)(cal * 0.25 / 9);
         return switch (meal) {
             case "breakfast" -> List.of(
                 meal("Egg whites + whole-grain toast + avocado", cal, p, c, f),
@@ -171,7 +172,7 @@ public class DietPlanService {
     }
 
     private List<List<Map<String, Object>>> vegetarianMeals(String meal, int cal) {
-        int p = cal / 4, c = cal / 4, f = cal / 9;
+        int p = (int)(cal * 0.30 / 4), c = (int)(cal * 0.45 / 4), f = (int)(cal * 0.25 / 9);
         return switch (meal) {
             case "breakfast" -> List.of(
                 meal("Masala oats with boiled egg", cal, p, c, f),
@@ -197,7 +198,7 @@ public class DietPlanService {
     }
 
     private List<List<Map<String, Object>>> veganMeals(String meal, int cal) {
-        int p = cal / 4, c = cal / 4, f = cal / 9;
+        int p = (int)(cal * 0.30 / 4), c = (int)(cal * 0.45 / 4), f = (int)(cal * 0.25 / 9);
         return switch (meal) {
             case "breakfast" -> List.of(
                 meal("Tofu scramble with whole-grain toast", cal, p, c, f),

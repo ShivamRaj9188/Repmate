@@ -6,6 +6,7 @@ import com.repmate.backend.repository.UserRepository;
 import com.repmate.backend.repository.UserStreakRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -41,13 +42,15 @@ public class StreakService {
      *   - Previous day → increment currentStreak
      *   - Any gap greater than 1 day → reset currentStreak to 1
      */
+    @Transactional
     public UserStreak updateStreak(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found: " + userId));
 
         Optional<UserStreak> existing = streakRepository.findByUserId(userId);
+        // userId stays unset on a new row: @MapsId derives it from user. Presetting it
+        // makes Hibernate merge a row that doesn't exist, which throws a stale-object error.
         UserStreak streak = existing.orElse(UserStreak.builder()
-                .userId(userId)
                 .user(user)
                 .currentStreak(0)
                 .longestStreak(0)
