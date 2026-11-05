@@ -11,8 +11,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/api/users")
@@ -72,7 +73,7 @@ public class UserController {
 
     // ─── Helpers ──────────────────────────────────────────────────────────────
 
-    private Map<String, Object> toProfileMap(User user) {
+    Map<String, Object> toProfileMap(User user) {
         Map<String, Object> m = new LinkedHashMap<>();
         m.put("id", user.getId());
         m.put("name", user.getName());
@@ -92,11 +93,12 @@ public class UserController {
         m.put("onboardingComplete", user.getOnboardingComplete());
 
         // Profile completeness calculation
-        long filled = List.of(
+        // Stream.of, not List.of: unfilled profile fields are null and List.of rejects nulls
+        long filled = Stream.of(
                 user.getAge(), user.getHeightCm(), user.getWeightKg(),
                 user.getGender(), user.getFitnessGoal(), user.getActivityLevel(),
                 user.getDietPreference(), user.getEquipmentAccess(), user.getWorkoutDaysPerWeek()
-        ).stream().filter(v -> v != null).count();
+        ).filter(Objects::nonNull).count();
         m.put("profileCompleteness", (int) Math.round((filled / 9.0) * 100));
 
         return m;
