@@ -6,6 +6,25 @@
 
 RepMate is a fitness tracking app that gives real-time feedback on your form and counts your reps using only your webcam. It uses computer vision and a machine learning classifier to act as a digital personal trainer, with no extra hardware.
 
+## Screenshots
+
+### Dashboard
+![RepMate dashboard with workout stats, streak and recent sessions](docs/screenshots/dashboard.png)
+
+### Live Workout
+Pick an exercise and start a session. RepMate then counts your reps and checks your form through your webcam.
+
+![RepMate live workout screen before a session starts](docs/screenshots/workout.png)
+
+### Workout History
+![RepMate workout history with the activity heatmap](docs/screenshots/history.png)
+
+### Diet Plan
+![RepMate personalized 7-day diet plan](docs/screenshots/diet.png)
+
+### Exercise Library
+![RepMate exercise library with video tutorials](docs/screenshots/videos.png)
+
 ## Privacy Guarantee
 
 RepMate is designed to keep your video private.
